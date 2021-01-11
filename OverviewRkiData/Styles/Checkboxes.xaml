@@ -1,0 +1,170 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Icons.xaml" />
+      
+
+        <ResourceDictionary Source="DefaultSetup.xaml" />
+        <ResourceDictionary Source="Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Style x:Key="CheckBoxBase" TargetType="CheckBox" BasedOn="{x:Null}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_C}" />
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+        <Setter Property="Height" Value="24" />
+    </Style>
+
+    <!-- Default Checkbox Header / Menu strip -->
+    <Style x:Key="ContextMenuCheckBoxDefault" 
+           TargetType="{x:Type CheckBox}" 
+           BasedOn="{StaticResource CheckBoxBase}">
+        <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_D}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <DockPanel VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                        <BulletDecorator DockPanel.Dock="Left" Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border"
+                                        Width="13"
+                                        Height="13"
+                                        CornerRadius="0"
+                                        Background="{StaticResource BrushMonochromatischGreen_B}"
+                                        BorderThickness="1"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        Opacity="1">
+                                    <Path
+                                        Width="9" Height="9"
+                                        x:Name="CheckMark"
+                                        SnapsToDevicePixels="False"
+                                        Stroke="{StaticResource BrushMonochromatischGreen_D}"
+                                        StrokeThickness="2"
+                                        Data="M 1 4 L 4 9 L 9 0"
+                                        Opacity="1" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              RecognizesAccessKey="True" 
+                                              Opacity="1" />
+                        </BulletDecorator>
+                        <!--<ContentControl x:Name="ContentControl" 
+                                        Content="{TemplateBinding Content}" 
+                                        Visibility="Collapsed"/>-->
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="CheckMark" 
+                                    Property="Visibility" 
+                                    Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" 
+                                    Property="BorderBrush"
+                                    Value="{StaticResource BrushMonochromatischGreen_B}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Border" 
+                                    Property="Background" 
+                                    Value="{StaticResource BrushMonochromatischGreen_D}" />
+                            <Setter TargetName="Border" 
+                                    Property="BorderBrush"
+                                    Value="{StaticResource BrushMonochromatischGreen_A}" />
+                            <Setter TargetName="CheckMark" 
+                                    Property="Visibility" 
+                                    Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" 
+                                    Property="Opacity" 
+                                    Value="0.5" />
+                            <Setter TargetName="Border" 
+                                    Property="BorderBrush"
+                                    Value="{StaticResource BrushMonochromatischGreen_D}" />
+                            <Setter TargetName="Border" 
+                                    Property="Background" 
+                                    Value="Gray" />
+                            <Setter TargetName="ContentPresenter" 
+                                    Property="Opacity" 
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="LightGray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- checkbox base -->
+    <Style x:Key="ContextMenuCheckboxBase" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
+        <Setter Property="Width" Value="26" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="Content" Value="{StaticResource PathIconDummy}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+
+                    <Grid Width="28" Height="28">
+
+                        <Path x:Name="PathIconState"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Style="{TemplateBinding Content}">
+                            <Path.RenderTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                            </Path.RenderTransform>
+                        </Path>
+
+                        <CheckBox Margin="14 0 0 0"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Bottom"
+                                  IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked}"
+                                  Style="{StaticResource ContextMenuCheckBoxDefault}" />
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <!--<Setter TargetName="PathIconState" Property="Opacity" Value=".9" />-->
+                            <Setter TargetName="PathIconState" 
+                                    Property="Fill"
+                                    Value="{StaticResource BrushMonochromatischGreen_E}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="PathIconState" 
+                                    Property="Fill"
+                                    Value="{StaticResource BrushMonochromatischGreen_C}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PathIconState" 
+                                    Property="Opacity" 
+                                    Value="0.5" />
+                            <Setter TargetName="PathIconState" 
+                                    Property="Fill"
+                                    Value="{StaticResource BrushMonochromatischGreen_D}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="LightGray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- checkBox dummy -->
+    <Style x:Key="ContextMenuCheckboxDummy" TargetType="CheckBox" BasedOn="{StaticResource ContextMenuCheckboxBase}" />
+    <Style TargetType="CheckBox" BasedOn="{StaticResource ContextMenuCheckBoxDefault}" >
+        <Setter Property="Margin" Value="5 2" />
+    </Style>
+</ResourceDictionary>

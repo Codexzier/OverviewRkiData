@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="OverviewRkiData.Views.Main.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OverviewRkiData.Views.Main"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <local:MainViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+                <Setter Property="Margin" Value="10 5" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border BorderBrush="{StaticResource BrushMonochromatischGreen_E}" BorderThickness="1">
+        <Grid Background="{StaticResource BrushMonochromatischGreen_D}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <!-- TODO: Kann umgestellt werden auf das Data grid und dessen SpaltenHeader -->
+                <Button Content="Sort by week incidence" Command="{Binding CommandSortByWeekIncidence}" />
+                <Button Content="Sort by deaths count" Command="{Binding CommandSortByDeaths}" />
+            </StackPanel>
+
+            <TextBox Grid.Row="1" 
+                     Margin="1 1 17 1"
+                     Text="{Binding SearchCounty, UpdateSourceTrigger=PropertyChanged}"
+                     KeyUp="TextBoxSearch_KeyUp"/>
+
+            <DataGrid Grid.Row="2" 
+                      Grid.RowSpan="2"
+                      RenderOptions.CachingHint="Cache"
+                      ItemsSource="{Binding Districts}" 
+                      SelectedItem="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" 
+                      Margin="0,1,0,26">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="" Binding="{Binding Selected}" Visibility="Collapsed" />
+                    <DataGridTextColumn Header="County" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Inzidenz" Binding="{Binding WeekIncidence, StringFormat=N1}" />
+                    <DataGridTextColumn Header="Death" Binding="{Binding Deaths}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Grid.Row="3"
+                    BorderBrush="{StaticResource BrushMonochromatischGreen_E}" 
+                    BorderThickness="0 1 0 0">
+                <TextBlock Text="{Binding ActualDataFromDate}" />
+            </Border>
+            
+        </Grid>
+    </Border>
+
+</UserControl>

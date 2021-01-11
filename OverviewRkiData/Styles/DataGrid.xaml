@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="DataGrid">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+      
+        <Setter Property="Background" Value="{StaticResource BrushMonochromatischGreen_D}" />
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="FontSize" Value="21" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="1 0 0 0" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_D}" />
+        <Setter Property="Background" Value="{StaticResource BrushMonochromatischGreen_C}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_D}" />
+        
+    </Style>
+
+ 
+
+    <Style TargetType="DataGridRowHeader">
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_D}" />
+        <Setter Property="Background" Value="{StaticResource BrushMonochromatischGreen_D}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+    </Style>
+
+    <Style TargetType="DataGridRow">
+        <Setter Property="BorderThickness" Value="0 1 0 1" />
+        <Setter Property="Background" Value="Transparent" />
+       
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderThickness" Value="0 1 0 1" />
+                <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_C}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+            </Trigger>
+
+            <!--<MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="AlternationIndex" Value="0" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="#4C000000" />
+                <Setter Property="Foreground" Value="Wheat" />
+            </MultiTrigger>
+            
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="AlternationIndex" Value="1" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="#4C000000" />
+                <Setter Property="Foreground" Value="White" />
+            </MultiTrigger>-->
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="DataGridCell" >
+        <Style.Setters>
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_E}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_C}" />
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="BorderThickness" Value="1 1 0 1" />
+                <Setter Property="BorderBrush" Value="{StaticResource BrushMonochromatischGreen_D}" />
+                <Setter Property="Background" Value="{StaticResource BrushMonochromatischGreen_C}"/>
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_D}" />
+            </Trigger>
+            <!--<Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BrushMonochromatischGreen_A}"/>
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+            </Trigger>-->
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

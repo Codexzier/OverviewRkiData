@@ -1,0 +1,88 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OverviewRkiData.Styles.Tmp"
+             x:Class="OverviewRkiData.Styles.Tmp.UserControl1"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!--<Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+        </Style>-->
+
+        <!--<Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="7" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>-->
+        
+        <!--<Style TargetType="DataGridRowHeader">
+            <Setter Property="FontSize" Value="9" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="20" />
+        </Style>-->
+    </UserControl.Resources>
+    <Grid>
+        <Ellipse HorizontalAlignment="Left" Height="200" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="200"/>
+        <Rectangle HorizontalAlignment="Left" Height="215" Margin="0,100,0,0" Stroke="Black" VerticalAlignment="Top" Width="239" Fill="Black"/>
+        <Rectangle HorizontalAlignment="Left" Height="215" Margin="100,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="239" Fill="Black"/>
+
+        <Path Style="{StaticResource PathIconQuarterDot}" />
+
+        <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                  CanUserResizeRows="False" CanUserSortColumns="False" GridLinesVisibility="All">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Column0" Margin="0" />
+                    </DataGridTemplateColumn.Header>
+                    <!--<DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="FontSize" Value="9" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>-->
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="PictureDots:RowDotItems">
+                            <Path Margin="0" Fill="{Binding DotColumns[0].ColorBrush}" Style="{StaticResource PathIconQuarterDot}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="22">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="PictureDots:RowDotItems">
+                            <Path Margin="0" Fill="{Binding DotColumns[1].ColorBrush}" Style="{StaticResource PathIconQuarterDot}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="33">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="PictureDots:RowDotItems">
+                            <Path Margin="0" Fill="{Binding DotColumns[2].ColorBrush}" Style="{StaticResource PathIconQuarterDot}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="H" Binding="{Binding Column0}" />
+                <DataGridTextColumn Header="G" Binding="{Binding Column1}" />
+                <DataGridTextColumn Header="F" Binding="{Binding Column2}" />
+            </DataGrid.Columns>
+            
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate DataType="PictureDots:RowDotItems">
+                    <!--RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type PictureDots:RowDotItems}}, Path=DotColumns[2].Name-->
+                    <TextBlock Text="{Binding RowName}" MinWidth="50" />
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+
+            <local:TestDataRowItem Column0="1" Column1="ABC" Column2="A1" />
+            <local:TestDataRowItem Column0="2" Column1="BCD" Column2="B2" />
+            <local:TestDataRowItem Column0="3" Column1="CDE" Column2="C3" />
+        </DataGrid>
+    </Grid>
+</UserControl>

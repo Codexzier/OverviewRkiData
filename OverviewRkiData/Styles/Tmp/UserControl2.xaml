@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="OverviewRkiData.Styles.Tmp.UserControl2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OverviewRkiData.Styles.Tmp"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="200">
+    <Grid>
+        <Grid>
+            <Border x:Name="BaseFrameBorder3" BorderThickness="0" BorderBrush="Transparent" Margin="25 25 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="25" MinWidth="25" Padding="0" >
+                <Path Data="F1 M 0,25 25,0 Z" Stroke="AliceBlue" Height="25" Width="25" Margin="0" StrokeThickness="1.5" />
+            </Border>
+            <Border x:Name="BaseFrameBorder" BorderThickness="1 1 1 0" BorderBrush="AliceBlue" Margin="0 0 0 25" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="2" />
+            <Border x:Name="BaseFrameBorder2" BorderThickness="1 0 0 1" BorderBrush="Aqua" Margin="0 25 25 0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MinHeight="25" MinWidth="25" />
+           
+
+            <TextBlock x:Name="TextBlock" 
+                                       Text="Druek mich!"
+                                       Margin="20 2"
+                                       Style="{StaticResource TextBlockBase}"
+                                       Foreground="{StaticResource BrushMonochromatischGreen_C}" />
+        </Grid>
+    </Grid>
+</UserControl>
