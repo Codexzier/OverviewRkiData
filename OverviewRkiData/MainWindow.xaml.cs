@@ -19,13 +19,20 @@ namespace OverviewRkiData
         {
             this.InitializeComponent();
             
-            new ShiftDataToSubFolder().MoveRkiDataFilesFromCurrentApplicationFolderToSubFolder();
+            this.Prepare();
 
             var setting = UserSettingsLoader.GetInstance().Load();
 
             this.LoadApplicationSize(setting);
             this.LoadApplicationWindowState(setting);
             this.LoadApplicationStartLocation(setting);            
+        }
+
+        private void Prepare()
+        {
+            new ShiftDataToSubFolder().MoveRkiDataFilesFromCurrentApplicationFolderToSubFolder();
+
+           // new InsertDataToSQLiteDatabase().Import();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
