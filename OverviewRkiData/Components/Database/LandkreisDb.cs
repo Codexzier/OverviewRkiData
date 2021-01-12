@@ -1,4 +1,4 @@
-﻿namespace OverviewRkiData.Components.RkiDataToSQLite
+﻿namespace OverviewRkiData.Components.Database
 {
     public class LandkreisDb
     {

@@ -1,12 +1,12 @@
 ﻿using OverviewRkiData.Components.Data;
 using OverviewRkiData.Components.RkiCoronaLandkreise;
-using OverviewRkiData.Components.RkiDataToSQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OverviewRkiData.Components.Database;
 
 namespace OverviewRkiData.Components.LegacyData
 {
@@ -16,7 +16,7 @@ namespace OverviewRkiData.Components.LegacyData
 
         public InsertDataToSQLiteDatabase()
         {
-            this._databaseConnector = new RkiDatabaseConnector();
+            //this._databaseConnector = new RkiDatabaseConnector();
 
         }
 

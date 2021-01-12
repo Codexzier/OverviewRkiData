@@ -18,8 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Components\RkiDataToSQLite\x64\" />
-    <Folder Include="Components\RkiDataToSQLite\x86\" />
   </ItemGroup>
 
 </Project>

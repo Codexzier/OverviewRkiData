@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OverviewRkiData.Components.RkiDataToSQLite
+namespace OverviewRkiData.Components.Database
 {
     public class DataValuesDb
     {
