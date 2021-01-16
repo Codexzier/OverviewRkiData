@@ -25,6 +25,7 @@ namespace OverviewRkiData.Views.Main
         private string _actualDataFromDate;
         private ICommand _commandSortByWeekIncidence;
         private ICommand _commandSortByDeaths;
+        private int _countyCount;
 
         public ObservableCollection<DistrictItem> Districts
         {
@@ -77,6 +78,16 @@ namespace OverviewRkiData.Views.Main
             {
                 this._actualDataFromDate = value;
                 this.OnNotifyPropertyChanged(nameof(this.ActualDataFromDate));
+            }
+        }
+
+        public int CountyCount
+        {
+            get => this._countyCount;
+            set
+            {
+                this._countyCount = value;
+                this.OnNotifyPropertyChanged(nameof(this.CountyCount));
             }
         }
 

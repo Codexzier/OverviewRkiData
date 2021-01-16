@@ -2,6 +2,7 @@
 using OverviewRkiData.Components.Data;
 using OverviewRkiData.Components.UserSettings;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,11 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
             }
 
             var result = this.ConvertToLandkreise(this.LoadActualData());
+            if (result == null)
+            {
+                return null;
+            }
+
             this.SaveToFile(result, filename);
             return result;
         }
@@ -143,7 +149,16 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
 
             var result = client.DownloadString(UrlGenCasesDeathsWeekIncidence);
 
+            if (result.ToLower().Contains("error") || string.IsNullOrEmpty(result))
+            {
+                this.RkiDataErrorEvent?.Invoke("Fehler beim abrufen der Daten.");
+                return null;
+            }
+
             return JsonConvert.DeserializeObject<RkiCoronaLandkreiseResult>(result);
         }
+
+        public delegate void RkiDataErrorEventHandler(string message);
+        public event RkiDataErrorEventHandler RkiDataErrorEvent;
     }
 }

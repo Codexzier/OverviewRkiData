@@ -5,7 +5,8 @@ namespace OverviewRkiData.Test
 {
     public class MyTestData : ISQLiteData
     {
-        public Int64 Id { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public long Id { get; set; }
 
         public string MyText { get; set; }
     }

@@ -10,6 +10,7 @@ namespace OverviewRkiData.Components.Data
     {
         public static string DataFolderName = "rki-data";
         public static string RkiFilename = "rki-corona-data";
+        public static string DatabaseFilename = $"{Environment.CurrentDirectory}/rki-database.db";
 
         public static string CreateFilename()
         {

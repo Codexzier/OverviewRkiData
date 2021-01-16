@@ -12,80 +12,82 @@ namespace OverviewRkiData.Components.LegacyData
 {
     public class InsertDataToSQLiteDatabase
     {
-        private RkiDatabaseConnector _databaseConnector;
+        private readonly string _subFolder;
+        private readonly RkiDatabaseConnector _databaseConnector;
 
-        public InsertDataToSQLiteDatabase()
+        public InsertDataToSQLiteDatabase(string databaseFilename)
+        : this(databaseFilename, $"{Environment.CurrentDirectory}/{HelperExtension.DataFolderName}")
         {
-            //this._databaseConnector = new RkiDatabaseConnector();
-
         }
 
-        //public void Import()
-        //{
-        //    this._databaseConnector.Init();
+        public InsertDataToSQLiteDatabase(string databaseFilename, string subFolder)
+        {
+            this._subFolder = subFolder;
+            this._databaseConnector = new RkiDatabaseConnector(databaseFilename);
+        }
 
-        //    var subFolder = $"{Environment.CurrentDirectory}/{HelperExtension.DataFolderName}";
-        //    var files = Directory.GetFiles(subFolder)
-        //       .Where(w => w.Contains(HelperExtension.RkiFilename))
-        //       .ToArray();
+        // TODO: Wird noch umgebaut
+        public void Import()
+        {
+            var files = Directory.GetFiles(this._subFolder)
+                .Where(w => w.Contains(HelperExtension.RkiFilename))
+                .ToArray();
 
-        //    if (!files.Any())
-        //    {
-        //        return;
-        //    }
+            if (!files.Any())
+            {
+                return;
+            }
 
-        //    var allExistDate = this._databaseConnector
-        //        .LoadAll()
-        //        .Select(s => s.StateTime)
-        //        .ToArray();
+            var allExistDate = this._databaseConnector
+                .Select<RkiDataDb>()
+                .Select(s => s.StateTime)
+                .ToArray();
 
-        //    var landkreise = this._databaseConnector
-        //        .AllLandkreise()
-        //        .Select(s => s)
-        //        .ToArray();
+            var landkreise = this._databaseConnector
+                .Select<LandkreisDb>()
+                .ToArray();
 
-        //    foreach (var file in files)
-        //    {
-        //        var result = RkiCoronaLandkreiseComponent
-        //            .GetInstance()
-        //            .LoadFromFile(file);
+            foreach (var file in files)
+            {
+                var result = RkiCoronaLandkreiseComponent
+                    .GetInstance()
+                    .LoadFromFile(file);
 
-        //        if (allExistDate.Any(a => a.Equals(result.Date)))
-        //        {
-        //            continue;
-        //        }
+                if (allExistDate.Any(a => a.Equals(result.Date)))
+                {
+                    continue;
+                }
 
-        //        var dataValuesIds = new List<int>();
-        //        foreach (var item in result.Districts)
-        //        {
-        //            var landkreis = landkreise.FirstOrDefault(f => f.Name.Equals(item.Name));
+                var dataValuesIds = new List<int>();
+                foreach (var item in result.Districts)
+                {
+                    var landkreis = landkreise.FirstOrDefault(f => f.Name.Equals(item.Name));
 
-        //            if (landkreis == null)
-        //            {
-        //                continue;
-        //            }
+                    if (landkreis == null)
+                    {
+                        continue;
+                    }
 
-        //            var id = this._databaseConnector.Add(new DataValuesDb
-        //            {
-        //                LandkreisDbId = landkreis.Id,
-        //                WeekIncidence = item.WeekIncidence,
-        //                Deaths = item.Deaths,
-        //                Cases = item.Cases,
-        //                Date = item.Date
-        //            });
-        //        }
+                    var id = this._databaseConnector.Insert(new DataValuesDb
+                    {
+                        LandkreisDbId = landkreis.Id,
+                        WeekIncidence = item.WeekIncidence,
+                        Deaths = item.Deaths,
+                        Cases = item.Cases,
+                        Date = item.Date
+                    });
+                }
 
-        //        var rkiDataDb = new RkiDataDb
-        //        {
-        //            StateTime = result.Date,
-        //            DataValuesDbIds = dataValuesIds.ToArray()
-        //        };
-        //        this._databaseConnector.Add(rkiDataDb);
-        //    }
+                var rkiDataDb = new RkiDataDb
+                {
+                    StateTime = result.Date,
+                    DataValuesDbIds = dataValuesIds.ToArray()
+                };
+                this._databaseConnector.Insert(rkiDataDb);
+            }
 
-
-        //    var data = this._databaseConnector.LoadAll();
-        //    Debug.WriteLine($"Rki Data count: {data.Count()}");
-        //}
+            var data = this._databaseConnector.Select<DataValuesDb>();
+            Debug.WriteLine($"Rki data value count: {data.Count()}");
+        }
     }
 }

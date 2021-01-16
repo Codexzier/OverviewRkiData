@@ -1,6 +1,7 @@
 ﻿using OverviewRkiData.Components.RkiCoronaLandkreise;
 using System;
 using System.Windows.Input;
+using OverviewRkiData.Views.Base;
 
 namespace OverviewRkiData.Views.Setup
 {
@@ -16,8 +17,11 @@ namespace OverviewRkiData.Views.Setup
         public void Execute(object parameter)
         {
             var component = RkiCoronaLandkreiseComponent.GetInstance();
+            component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
             component.LoadData(true);
-
+            component.RkiDataErrorEvent -= this.Component_RkiDataErrorEvent;
         }
+
+        private void Component_RkiDataErrorEvent(string message) => SimpleStatusOverlays.Show("ERROR", message);
     }
 }

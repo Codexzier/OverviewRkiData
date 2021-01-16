@@ -53,7 +53,10 @@
             <Border Grid.Row="3"
                     BorderBrush="{StaticResource BrushMonochromatischGreen_E}" 
                     BorderThickness="0 1 0 0">
-                <TextBlock Text="{Binding ActualDataFromDate}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ActualDataFromDate}" />
+                    <TextBlock Text="{Binding CountyCount}" />
+                </StackPanel>
             </Border>
             
         </Grid>

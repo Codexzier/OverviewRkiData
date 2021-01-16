@@ -35,7 +35,14 @@ namespace OverviewRkiData.Views.Main
                 if (arg.Content is BaseMessageOptions option && option == BaseMessageOptions.LoadActualData)
                 {
                     var component = RkiCoronaLandkreiseComponent.GetInstance();
+                    component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
                     var landkreise = component.LoadData();
+
+                    if (landkreise == null)
+                    {
+                        SimpleStatusOverlays.ActivityOff();
+                        return;
+                    }
 
                     var di = landkreise.Districts.Select(s => new DistrictItem
                     {
@@ -49,23 +56,27 @@ namespace OverviewRkiData.Views.Main
                 }
 
                 this._viewModel.ActualDataFromDate = StaticDataManager.ActualLoadedDataDate.ToShortDateString();
-                   
+
                 this.Dispatcher.Invoke(() =>
                 {
                     this._viewModel.Districts.Clear();
                 });
 
+                this._viewModel.CountyCount = 0;
                 foreach (var item in StaticDataManager.ActualLoadedData)
                 {
                     this.Dispatcher.Invoke(() =>
                     {
                         this._viewModel.Districts.Add(item);
+                        this._viewModel.CountyCount++;
                     });
                 }
-
+                
                 SimpleStatusOverlays.ActivityOff();
             });
         }
+
+        private void Component_RkiDataErrorEvent(string message) => SimpleStatusOverlays.Show("ERROR", message);
 
         private void TextBoxSearch_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {

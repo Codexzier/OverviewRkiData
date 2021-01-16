@@ -1,43 +1,49 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
 namespace OverviewRkiData.Components.Database
 {
-    internal class DatabaseQueryCreator
+    public class DatabaseQueryCreator
     {
         #region TABLE Create and Exist Querys
 
         /// <summary>
-        /// Erstellt aus dem Daten Objekt den Befehl für das erstellen einer Tabelle.
+        /// Creates the command for creating a table from the data object.
         /// </summary>
-        /// <typeparam name="T">Das Daten Objekt angeben.</typeparam>
-        /// <param name="data">Instanz des Daten Objektes.</param>
-        /// <returns>Gibt den fertige Befehl als Zeichenkette zurück.</returns>
-        internal string GetCreateTableByDataObjectString<T>()
+        /// <typeparam name="T">Specify the data object.</typeparam>
+        /// <returns>Returns the finished command as a string.</returns>
+        public string GetCreateTableByDataObjectString<T>()
         {
-            StringBuilder sb = new StringBuilder();
-            Type type = ((T)Activator.CreateInstance(typeof(T))).GetType();
+            var sb = new StringBuilder();
+            var type = typeof(T);
 
-            // Name des Datenobjektes als Tabellenname verwenden.
-            sb.Append("CREATE TABLE " + type.Name + "(");
-            foreach (PropertyInfo item in type.GetProperties())
+            if (type == null)
             {
+                throw new DatabaseQueryCreatorException("The type is not valid for create a query.");
+            }
 
-                // Name der Eigenschaft verwenden für die Datenspalte.
+            // Use the name of the data object as the table name.
+            sb.Append($"CREATE TABLE {type.Name}(");
+            foreach (var item in type.GetProperties())
+            {
+                // Use property name for the column.
                 sb.Append(item.Name + " ");
                 bool setType = false;
 
-                if (item.Name == "Id")
+                // TODO: need refactor this :D
+                if (IsPrimaryKeyAndAutoIncrement(item.CustomAttributes))
                 {
-                    // Primary Key anlegen für das Automatische Hochzählen der Id Nummer
+                    // Create primary key for automatic incrementing of the Id number
                     if (item.PropertyType == typeof(Int64)) { sb.Append("INTEGER PRIMARY KEY AUTOINCREMENT,"); setType = true; }
                 }
                 else
                 {
-                    // Daten Typ ermitteln und passenden Datentype für die Daten Tabelle festlegen.
+                    // Determine data type and set the appropriate data type for the data table.
                     if (item.PropertyType == typeof(int) || item.PropertyType == typeof(Int64)) { sb.Append("INT NOT NULL,"); setType = true; }
                     if (item.PropertyType == typeof(string)) { sb.Append("NVARCHAR NOT NULL,"); setType = true; }
                     if (item.PropertyType == typeof(DateTime)) { sb.Append("INTEGER NOT NULL,"); setType = true; }
@@ -54,13 +60,17 @@ namespace OverviewRkiData.Components.Database
                     throw new ArgumentException("Can recognize type");
                 }
             }
-
-            // Letztes Komma entfernen
+            
             sb.Remove(sb.ToString().Length - 1, 1);
             sb.Append(")");
 
             return sb.ToString();
         }
+
+        private static bool IsPrimaryKeyAndAutoIncrement(IEnumerable<CustomAttributeData> itemCustomAttributes) =>
+            itemCustomAttributes
+                .Count(w => w.AttributeType == typeof(PrimaryKeyAttribute) ||
+                            w.AttributeType == typeof(AutoIncrementAttribute)) == 2;
 
         /// <summary>
         /// Stellt zu dem Typ den passenen Query zusammen um nach der Tabelle prüfen zu können.
@@ -308,5 +318,12 @@ namespace OverviewRkiData.Components.Database
         }
 
         #endregion
+    }
+
+    public class DatabaseQueryCreatorException : Exception
+    {
+        public DatabaseQueryCreatorException(string message) : base(message)
+        {
+        }
     }
 }

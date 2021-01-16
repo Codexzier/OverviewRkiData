@@ -22,7 +22,7 @@ namespace OverviewRkiData.Components.Database
         /// <summary>
         /// Gets or sets the debug switch.
         /// </summary>
-        private readonly bool _debug = false;
+        private readonly bool _debug;
 
         /// <summary>
         /// Standard constructor with specification about the data with the data. If the file does not exist, then it will be created.
@@ -110,7 +110,7 @@ namespace OverviewRkiData.Components.Database
         {
             this.CheckInterface<T>();
 
-            var query = this._querys.GetDataInsert<T>(data);
+            var query = this._querys.GetDataInsert(data);
             this.DebugMessage($"created query: {query}");
             var result = this.ExecuteQuery(query);
             
@@ -147,6 +147,11 @@ namespace OverviewRkiData.Components.Database
                 // TODO: ganzen Block Auslagern und neu schreiben
 
                 var tObject = (T)Activator.CreateInstance(typeof(T));
+                if (tObject == null)
+                {
+                    break;
+                }
+
                 var type = tObject.GetType();
                 var index = 0;
                 var objectValue = reader.GetValue(index);
@@ -228,6 +233,11 @@ namespace OverviewRkiData.Components.Database
             while (reader.Read())
             {
                 // TODO: ganzen block neu schreiben.
+                if (data == null)
+                {
+                    continue;
+                }
+
                 var type = data.GetType();
                 var index = 0;
                 foreach (var item in type.GetProperties())
@@ -260,7 +270,7 @@ namespace OverviewRkiData.Components.Database
         {
             this.CheckInterface<T>();
 
-            var query = this._querys.GetDataUpdate<T>(data);
+            var query = this._querys.GetDataUpdate(data);
             this.DebugMessage($"created query: {query}");
 
             var result = this.ExecuteQuery(query);
@@ -281,7 +291,7 @@ namespace OverviewRkiData.Components.Database
         {
             this.CheckInterface<T>();
 
-            var query = this._querys.GetDataDelete<T>(data);
+            var query = this._querys.GetDataDelete(data);
             this.DebugMessage($"created query: {query}");
 
             var result = this.ExecuteQuery(query);
@@ -316,9 +326,9 @@ namespace OverviewRkiData.Components.Database
         #region Debug and Check
 
         /// <summary>
-        /// Prüft den Debugschalter ab und gibt die Nachricht im Output aus, wenn dieser eingeschaltet ist.
+        /// Checks the debug switch and outputs the message in the output if it is on.
         /// </summary>
-        /// <param name="message">Nachricht die für die Stelle angegeben werden soll.</param>
+        /// <param name="message">Message to be specified for the job.</param>
         private void DebugMessage(string message)
         {
             if (this._debug)
@@ -328,18 +338,23 @@ namespace OverviewRkiData.Components.Database
         }
 
         /// <summary>
-        /// Gibt über den Output den Typ zurück, aus dem übergebenen Objekt.
+        /// Returns the type via the output, from the passed object.
         /// </summary>
-        /// <param name="obj">Objekt übergabe.</param>
+        /// <param name="obj">set object for debug information.</param>
         private void DebugTypeIdentification(object obj)
         {
-            if (this._debug)
+            if (!this._debug)
             {
-                if (obj is int) { Debug.Print("Datenfeld ist ein INT."); }
-                else if (obj is Int64) { Debug.Print("Datenfeld ist ein INT."); }
-                else if (obj is string) { Debug.Print("Datenfeld ist eine Zeichenkette."); }
-                else { Debug.Print("Daten Feld Typ nicht erkannt."); }
+                return;
             }
+
+            if (obj == null)
+            {
+                Debug.WriteLine($"The object is null.");
+                return;
+            }
+
+            Debug.WriteLine($"The type object is a {obj.GetType()}");
         }
 
 
@@ -347,7 +362,6 @@ namespace OverviewRkiData.Components.Database
         /// Prüft den Typ, ob das Interface implementiert wurde.
         /// </summary>
         /// <typeparam name="T">Typ angeben.</typeparam>
-        /// <param name="data">Übergabe des Daten Typ</param>
         /// <returns>Gibt true zurück, wenn das Interface im Typ implementiert wurde.</returns>
         private void CheckInterface<T>()
         {

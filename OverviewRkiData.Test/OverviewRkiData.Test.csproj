@@ -17,4 +17,10 @@
     <ProjectReference Include="..\OverviewRkiData\OverviewRkiData.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="rki-corona-data-01.01.2021.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
