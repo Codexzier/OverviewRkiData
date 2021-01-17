@@ -24,7 +24,7 @@ namespace OverviewRkiData.Components.Database
 
             if (type == null)
             {
-                throw new DatabaseQueryCreatorException("The type is not valid for create a query.");
+                throw new DatabaseQueryCreatorException("Can not create table. The type is not valid for create a query.");
             }
 
             // Use the name of the data object as the table name.
@@ -60,7 +60,7 @@ namespace OverviewRkiData.Components.Database
                     throw new ArgumentException("Can recognize type");
                 }
             }
-            
+
             sb.Remove(sb.ToString().Length - 1, 1);
             sb.Append(")");
 
@@ -73,19 +73,23 @@ namespace OverviewRkiData.Components.Database
                             w.AttributeType == typeof(AutoIncrementAttribute)) == 2;
 
         /// <summary>
-        /// Stellt zu dem Typ den passenen Query zusammen um nach der Tabelle prüfen zu können.
+        /// Assembles the appropriate query for the type to be able to check for the table.
         /// </summary>
-        /// <typeparam name="T">Typ angeben.</typeparam>
-        /// <returns>Gibt den fertige Abfrage String zurück.</returns>
-        internal string GetTableExist<T>()
+        /// <typeparam name="T">Set type object.</typeparam>
+        /// <returns>Returns the finished query string.</returns>
+        public string GetTableExist<T>()
         {
-            Type type = ((T)Activator.CreateInstance(typeof(T))).GetType();
+            var type = typeof(T);
 
-            // Name des Datenobjektes als Tabellenname verwenden.
-            StringBuilder sb = new StringBuilder();
+            if (type == null)
+            {
+                throw new DatabaseQueryCreatorException("Can not check table exist. The type is not valid for create a query.");
+            }
+
+            var sb = new StringBuilder();
             sb.Append("SELECT * ");
             sb.Append("FROM sqlite_master ");
-            sb.Append("WHERE type='table' AND name='" + type.Name + "'");
+            sb.Append($"WHERE type='table' AND name='{type.Name}'");
 
             return sb.ToString();
         }
@@ -95,78 +99,68 @@ namespace OverviewRkiData.Components.Database
         #region INSERT
 
         /// <summary>
-        /// Erstellt aus dem Daten Objekt und dessen hinterlegten Werten
-        /// einen Insert Befehlt, um einen neuen Datensatz anlegen zu können.
+        /// Creates an insert command from the data object and
+        /// its stored values in order to create a new data set.
         /// </summary>
-        /// <typeparam name="T">Das Daten Objekt angeben.</typeparam>
-        /// <param name="data">Fertiges Daten Objekt mit Daten übergeben.</param>
-        /// <returns>Gibt den fertige Befehl als Zeichenkette zurück.</returns>
-        internal string GetDataInsert<T>(T data)
+        /// <typeparam name="T">Specify the data object.</typeparam>
+        /// <param name="data">Pass finished data object with data.</param>
+        /// <returns>Returns the finished command as a string.</returns>
+        public string GetDataInsert<T>(T data)
         {
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sbValues = new StringBuilder();
-            Type type = data.GetType();
-
-            // Daten Felder benennen.
-            sb.Append("INSERT INTO " + type.Name + " (");
-            foreach (PropertyInfo item in type.GetProperties())
+            if (data == null)
             {
-                // Wenn nicht Id, und falls doch prüfe ob es ein int ist und wenn der Wert sich von -1 unterscheidet.
-                if ((item.Name != "Id" && item.GetValue(data) is int &&
-                    (int)item.GetValue(data) != -1) ||
-                    item.GetValue(data) is string)
+                throw new DatabaseQueryCreatorException("Data can not be null. The type is not valid for create a query.");
+            }
+
+            var sb = new StringBuilder();
+            var sbValues = new StringBuilder();
+            var type = typeof(T);
+            if (type == null)
+            {
+                throw new DatabaseQueryCreatorException("Can not insert query. The type is not valid for create a query.");
+            }
+
+            sb.Append($"INSERT INTO {type.Name} (");
+            foreach (var item in type.GetProperties())
+            {
+                // TODO: Need refactor this :D
+                // Wenn nicht Id, und falls doch prüfe ob es ein int
+                // ist und wenn der Wert sich von -1 unterscheidet.
+                if (IsPrimaryKeyAndAutoIncrement(item.CustomAttributes))
                 {
-                    sb.Append(item.Name + ",");
-                    sbValues.Append("'" + item.GetValue(data).ToString() + "',");
+                    continue;
                 }
                 else if (item.GetValue(data) is DateTime)
                 {
+
+                    var dt = (DateTime)item.GetValue(data);
+
                     sb.Append(item.Name + ",");
-
-                    DateTime dt = (DateTime)item.GetValue(data);
-
-                    sbValues.Append("'" + dt.Ticks + "',");
+                    sbValues.Append($"'{dt.Ticks}',");
                 }
                 else if (item.GetValue(data) is decimal || item.GetValue(data) is double)
                 {
                     sb.Append(item.Name + ",");
-                    sbValues.Append("'" + item.GetValue(data).ToString().Replace(',', '.') + "',");
+                    // TODO: Format by culture missing
+                    sbValues.Append($"'{item.GetValue(data).ToString().Replace(',', '.')}',");
                 }
-                else if (item.Name != "Id" && item.GetValue(data) is Int64)
+                else
                 {
                     sb.Append(item.Name + ",");
-                    sbValues.Append("'" + item.GetValue(data).ToString() + "',");
-                }
-                else if (item.Name != "Id" && item.GetValue(data) is bool)
-                {
-                    sb.Append(item.Name + ",");
-                    sbValues.Append("'" + item.GetValue(data).ToString() + "',");
+                    sbValues.Append($"'{item.GetValue(data)}',");
                 }
             }
 
-            // Letztes Komma Entfernen
             sb.Remove(sb.ToString().Length - 1, 1);
             sb.Append(") ");
-            // Letztes Komma entfernen
+
             sbValues.Remove(sbValues.ToString().Length - 1, 1);
 
-            // Werte aus dem Daten Objekt eintragen.
             sb.Append("VALUES (");
             sb.Append(sbValues.ToString());
             sb.Append(")");
 
-            StringBuilder sbSubList = new StringBuilder();
-            // GOTO??
-            // Was ist mit den Unter Klassen
-            foreach (FieldInfo item in type.GetFields())
-            {
-                string resultSubList = string.Empty;
-                if (item.GetValue(data) is IList)
-                {
-
-                }
-                Debug.Print(item.Attributes.ToString());
-            }
+            // TODO: what is about sub objects?
 
             return sb.ToString();
         }
@@ -176,56 +170,54 @@ namespace OverviewRkiData.Components.Database
         #region SELECT Query
 
         /// <summary>
-        /// Erstellt aus dem Typ die Abfrage zusammen.
+        /// Creates the query from the type.
         /// </summary>
-        /// <typeparam name="T">Das Daten Objekt angeben.</typeparam>
-        /// <param name="data">Instanz des Daten Objektes.</param>
-        /// <returns>Gibt den fertige Befehl als Zeichenkette zurück.</returns>
-        internal string GetDataSelect<T>()
+        /// <typeparam name="T">Specify the data object.</typeparam>
+        /// <returns>Returns the finished command as a string.</returns>
+        public string GetDataSelect<T>()
         {
-            Type type = ((T)Activator.CreateInstance(typeof(T))).GetType();
+            var type = typeof(T);
 
-            // Daten Felder Selektieren
-            StringBuilder sb = new StringBuilder();
+            if (type == null)
+            {
+                throw new DatabaseQueryCreatorException("Can not select on null type. The type is not valid for create a query.");
+            }
+
+            var sb = new StringBuilder();
             sb.Append("SELECT ");
-            foreach (PropertyInfo item in type.GetProperties())
+            foreach (var item in type.GetProperties())
             {
                 sb.Append(item.Name + ",");
             }
 
-            // Letztes Komma entfernen
             sb.Remove(sb.ToString().Length - 1, 1);
-
-            // Aus Daten Tabelle
             sb.Append(" FROM " + type.Name);
 
             return sb.ToString();
         }
 
         /// <summary>
-        /// Stellt aus dem Typ und der Id die Abfrage zusammen
+        /// Assembles the query from the type and the id
         /// </summary>
-        /// <typeparam name="T">Typ angeben</typeparam>
-        /// <returns>Gibt die fertige Abfrage als String zurück.</returns>
-        internal string GetDataSelectById<T>(Int64 id)
+        /// <typeparam name="T">Setup type</typeparam>
+        /// <returns>Returns the completed query as a string.</returns>
+        public string GetDataSelectById<T>(long id)
         {
-            Type type = ((T)Activator.CreateInstance(typeof(T))).GetType();
+            var type = typeof(T);
+            if (type == null)
+            {
+                throw new DatabaseQueryCreatorException("Can not select on null type. The type is not valid for create a query.");
+            }
 
-            // Daten Felder Selektieren
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("SELECT ");
-            foreach (PropertyInfo item in type.GetProperties())
+            foreach (var item in type.GetProperties())
             {
                 sb.Append(item.Name + ",");
             }
 
-            // Letztes Komma entfernen
             sb.Remove(sb.ToString().Length - 1, 1);
-
-            // Aus Daten Tabelle
             sb.Append(" FROM " + type.Name + " ");
-
-            // Datensatz mit der Id überschreiben.
             sb.Append("WHERE Id='" + id + "'");
 
             return sb.ToString();
@@ -236,40 +228,48 @@ namespace OverviewRkiData.Components.Database
         #region UPDATE
 
         /// <summary>
-        /// Erstellt aus dem Daten Typ den passenden Query.
+        /// Creates the appropriate query from the data type.
         /// </summary>
-        /// <typeparam name="T">Typ angeben</typeparam>
-        /// <param name="data">Übergabe des daten Typ.</param>
-        /// <returns>Gibt den fertigen String zurück.</returns>
-        internal string GetDataUpdate<T>(T data)
+        /// <typeparam name="T">Setup Type</typeparam>
+        /// <param name="data">Passing the data type.</param>
+        /// <returns>Returns the finished string.</returns>
+        public string CreateQueryUpdateData<T>(T data)
         {
-            Type type = data.GetType();
-            string id = "-1";
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("UPDATE " + type.Name + " ");
-            sb.Append("SET ");
-            foreach (PropertyInfo item in type.GetProperties())
+            if (data == null)
             {
-                if (item.Name == "Id") { id = item.GetValue(data).ToString(); }
+                throw new DatabaseQueryCreatorException("Data can not be null. The type is not valid for create a query.");
+            }
 
-                if (item.GetValue(data) is bool)
+            var type = typeof(T);
+            var primaryKeyAndAutoIncrementName = string.Empty;
+            var primaryKeyAndAutoIncrement = "-1";
+
+            var sb = new StringBuilder();
+            sb.Append($"UPDATE {type.Name} ");
+            sb.Append("SET ");
+            foreach (var item in type.GetProperties())
+            {
+                if (IsPrimaryKeyAndAutoIncrement(item.CustomAttributes))
                 {
-                    string b = (bool)item.GetValue(data) == true ? "1" : "0";
-                    sb.Append(item.Name + "='" + b + "',");
+                    primaryKeyAndAutoIncrement = item.GetValue(data)?.ToString();
+                    primaryKeyAndAutoIncrementName = item.Name;
+                }
+
+                if (item.GetValue(data) is bool bResult)
+                {
+                    var bStr = bResult ? "1" : "0";
+                    sb.Append($"{item.Name }=='{bStr}',");
                 }
                 else
                 {
-                    sb.Append(item.Name + "='" + item.GetValue(data).ToString() + "',");
+                    sb.Append($"{item.Name }='{item.GetValue(data)}',");
                 }
             }
-            // Letztes Komma und dingens entfernen
+
             sb.Remove(sb.ToString().Length - 1, 1);
             sb.Append(" ");
 
-            // Der zu überschreiben Datensatz mit der Id.
-            sb.Append("WHERE Id='" + id + "';");
-
+            sb.Append($"WHERE {primaryKeyAndAutoIncrementName}='{primaryKeyAndAutoIncrement}';");
             return sb.ToString();
         }
 
@@ -278,52 +278,56 @@ namespace OverviewRkiData.Components.Database
         #region DELETE QUERY
 
         /// <summary>
-        /// Stellt aus dem Typ und der Id Nummer die Lösch Abfrage ab.
+        /// Creates the delete query from the type and the Id number.
         /// </summary>
-        /// <typeparam name="T">Typ angeben.</typeparam>
-        /// <param name="id">Id nummer des zu löschenden Datensatzes.</param>
-        /// <returns></returns>
-        internal string GetDataDelete<T>(Int64 id)
+        /// <typeparam name="T">Set Type.</typeparam>
+        /// <param name="id">Id number of the record to be deleted.</param>
+        /// <returns>Returns the query as a string.</returns>
+        public string GetDataDelete<T>(long id)
         {
-            Type type = ((T)Activator.CreateInstance(typeof(T))).GetType();
+            var type = typeof(T);
             return this.GetDataDelete(type.Name, id);
         }
 
         /// <summary>
-        /// Stellt aus dem Typ und dem Datenobjekt die Lösch Abfrage zusammen.
+        /// Assembles the delete query from the type and the data object.
         /// </summary>
-        /// <typeparam name="T">Typ angeben.</typeparam>
-        /// <param name="data">Der zulöschende Datensatz.</param>
-        /// <returns>Gibt die Abfrage als Zeichenkette zurück.</returns>
-        internal string GetDataDelete<T>(T data)
+        /// <typeparam name="T">Set Type.</typeparam>
+        /// <param name="data">The record to be deleted.</param>
+        /// <returns>Returns the query as a string.</returns>
+        public string GetDataDelete<T>(T data)
         {
-            Type type = data.GetType();
+            var type = typeof(T);
+
+            // TODO: can only handle with one of them
+            var hasPrimaryKeyAndAutoIncrementValue = type
+                .GetProperties()
+                .FirstOrDefault(w => IsPrimaryKeyAndAutoIncrement(w.CustomAttributes));
+
+            if (hasPrimaryKeyAndAutoIncrementValue == null)
+            {
+                throw new DatabaseQueryCreatorException("");
+            }
+
             return this.GetDataDelete(type.Name, ((ISQLiteData)data).Id);
         }
 
         /// <summary>
-        /// Stellt aus den Tabellennamen und der Id Nummer die Lösch abfrage zusammen.
+        /// Assembles the delete query from the table names and the Id number.
         /// </summary>
-        /// <param name="tablename"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private string GetDataDelete(string tablename, Int64 id)
+        /// <param name="tableName">Set table name.</param>
+        /// <param name="id">primary key of the data set.</param>
+        /// <returns>Returns the query as a string.</returns>
+        private string GetDataDelete(string tableName, Int64 id)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("DELETE ");
-            sb.Append("FROM " + tablename + " ");
-            sb.Append("WHERE Id='" + id.ToString() + "'");
+            sb.Append($"FROM {tableName} ");
+            sb.Append($"WHERE Id='{id}'");
 
             return sb.ToString();
         }
 
         #endregion
-    }
-
-    public class DatabaseQueryCreatorException : Exception
-    {
-        public DatabaseQueryCreatorException(string message) : base(message)
-        {
-        }
     }
 }

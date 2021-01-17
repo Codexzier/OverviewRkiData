@@ -270,7 +270,7 @@ namespace OverviewRkiData.Components.Database
         {
             this.CheckInterface<T>();
 
-            var query = this._querys.GetDataUpdate(data);
+            var query = this._querys.CreateQueryUpdateData(data);
             this.DebugMessage($"created query: {query}");
 
             var result = this.ExecuteQuery(query);

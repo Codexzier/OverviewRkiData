@@ -1,5 +1,4 @@
-﻿using System;
-using OverviewRkiData.Components.RkiCoronaLandkreise;
+﻿using OverviewRkiData.Components.RkiCoronaLandkreise;
 
 namespace OverviewRkiData.Components.Database
 {
@@ -10,7 +9,4 @@ namespace OverviewRkiData.Components.Database
         public int Id { get; set; }
         public string Name { get; set; }
     }
-
-    public class PrimaryKeyAttribute : Attribute { }
-    public class AutoIncrementAttribute : Attribute { }
 }
