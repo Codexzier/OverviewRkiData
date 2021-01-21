@@ -26,6 +26,13 @@ namespace OverviewRkiData.Components.LegacyData
             this._databaseConnector = new RkiDatabaseConnector(databaseFilename);
         }
 
+        private static readonly Type[] _tables =
+        {
+            typeof(RkiDataDb), 
+            typeof(DataValuesDb), 
+            typeof(LandkreisDb)
+        };
+
         // TODO: Wird noch umgebaut
         public void Import()
         {
@@ -36,6 +43,11 @@ namespace OverviewRkiData.Components.LegacyData
             if (!files.Any())
             {
                 return;
+            }
+
+            if (!ExistTables(this._databaseConnector))
+            {
+                this._databaseConnector.Create<RkiDataDb>();
             }
 
             var allExistDate = this._databaseConnector
@@ -88,6 +100,12 @@ namespace OverviewRkiData.Components.LegacyData
 
             var data = this._databaseConnector.Select<DataValuesDb>();
             Debug.WriteLine($"Rki data value count: {data.Count()}");
+
+            static bool ExistTables(RkiDatabaseConnector dbConnector) =>
+                _tables.All(dbConnector.Exist);
+
+            static bool CreateTables(RkiDatabaseConnector dbConnector) =>
+                _tables.All(a => dbConnector.Create(a));
         }
     }
 }

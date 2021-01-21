@@ -3,7 +3,7 @@ using OverviewRkiData.Components.Database;
 
 namespace OverviewRkiData.Test
 {
-    public class MyTestData : ISQLiteData
+    public class MyTestData
     {
         [PrimaryKey, AutoIncrement]
         public long Id { get; set; }

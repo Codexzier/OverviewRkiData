@@ -51,9 +51,7 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if the table was created.</returns>
         public bool Create<T>()
         {
-            this.CheckInterface<T>();
-
-            var tableName = ((T)Activator.CreateInstance(typeof(T)))?.GetType().Name;
+            var tableName = typeof(T).Name;
 
             var query = this._querys.GetCreateTableByDataObjectString<T>();
             if (!this.Exist<T>())
@@ -68,6 +66,24 @@ namespace OverviewRkiData.Components.Database
             return false;
         }
 
+        public bool Create(Type type)
+        {
+            var tableName = type.Name;
+
+            var query = this._querys.GetCreateTableByDataObjectString(type);
+            if (!this.Exist(type))
+            {
+                this.DebugMessage($"created query: {query}");
+                var result = this.ExecuteQuery(query);
+                return result == 0 || result == 1;
+            }
+
+            this.DebugMessage($"The table already exists: {tableName}");
+
+            return false;
+        }
+
+
         /// <summary>
         /// With the specification of the type, it can be queried whether the table has already been created.
         /// </summary>
@@ -75,9 +91,18 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if the table exists.</returns>
         public bool Exist<T>()
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.GetTableExist<T>();
+            return this.InternalExist(query);
+        }
+
+        public bool Exist(Type type)
+        {
+            var query = this._querys.GetTableExist(type);
+            return this.InternalExist(query);
+        }
+
+        private bool InternalExist(string query)
+        {
             this.DebugMessage($"created query: {query}");
             var result = 0;
 
@@ -88,13 +113,18 @@ namespace OverviewRkiData.Components.Database
             var command = new SQLiteCommand(query, connection);
             var reader = command.ExecuteReader();
 
-            while (reader.Read()) { result = 1; }
+            while (reader.Read())
+            {
+                result = 1;
+            }
 
             reader.Close();
             connection.Close();
 
             return result == 1;
         }
+
+    
 
         #endregion
 
@@ -108,8 +138,6 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if a record could be saved.</returns>
         public bool Insert<T>(T data)
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.GetDataInsert(data);
             this.DebugMessage($"created query: {query}");
             var result = this.ExecuteQuery(query);
@@ -128,8 +156,6 @@ namespace OverviewRkiData.Components.Database
         /// <returns></returns>
         public List<T> Select<T>()
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.GetDataSelect<T>();
             this.DebugMessage($"Query zusammengestellt: {query}");
 
@@ -216,8 +242,6 @@ namespace OverviewRkiData.Components.Database
         /// <returns></returns>
         public T Select<T>(long id)
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.GetDataSelectById<T>(id);
             this.DebugMessage($"created Query : {query}");
 
@@ -268,8 +292,6 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if the record was updated</returns>
         public bool Update<T>(T data)
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.CreateQueryUpdateData(data);
             this.DebugMessage($"created query: {query}");
 
@@ -289,8 +311,6 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if the record was deleted.</returns>
         public bool Delete<T>(T data)
         {
-            this.CheckInterface<T>();
-
             var query = this._querys.GetDataDelete(data);
             this.DebugMessage($"created query: {query}");
 
@@ -358,17 +378,17 @@ namespace OverviewRkiData.Components.Database
         }
 
 
-        /// <summary>
-        /// Prüft den Typ, ob das Interface implementiert wurde.
-        /// </summary>
-        /// <typeparam name="T">Typ angeben.</typeparam>
-        /// <returns>Gibt true zurück, wenn das Interface im Typ implementiert wurde.</returns>
-        private void CheckInterface<T>()
-        {
-            bool result = (T)Activator.CreateInstance(typeof(T)) is ISQLiteData;
+        ///// <summary>
+        ///// Prüft den Typ, ob das Interface implementiert wurde.
+        ///// </summary>
+        ///// <typeparam name="T">Typ angeben.</typeparam>
+        ///// <returns>Gibt true zurück, wenn das Interface im Typ implementiert wurde.</returns>
+        //private void CheckInterface<T>()
+        //{
+        //    bool result = (T)Activator.CreateInstance(typeof(T)) is ISQLiteData;
 
-            if (!result) { throw new NotImplementedException("Für den Typ wurde das Interface ISQLiteData nicht implementiert."); }
-        }
+        //    if (!result) { throw new NotImplementedException("Für den Typ wurde das Interface ISQLiteData nicht implementiert."); }
+        //}
 
         #endregion
 

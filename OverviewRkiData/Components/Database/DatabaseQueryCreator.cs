@@ -17,16 +17,24 @@ namespace OverviewRkiData.Components.Database
         /// </summary>
         /// <typeparam name="T">Specify the data object.</typeparam>
         /// <returns>Returns the finished command as a string.</returns>
-        public string GetCreateTableByDataObjectString<T>()
+        public string GetCreateTableByDataObjectString<T>(out string[] extendArrayDataToTableQueries)
         {
-            var sb = new StringBuilder();
             var type = typeof(T);
 
+            return this.GetCreateTableByDataObjectString(type, out extendArrayDataToTableQueries);
+        }
+        
+        public string GetCreateTableByDataObjectString(Type type, out string[] extendArrayDataToTableQueries)
+        {
+            extendArrayDataToTableQueries = null;
             if (type == null)
             {
                 throw new DatabaseQueryCreatorException("Can not create table. The type is not valid for create a query.");
             }
 
+            var listExtendDataToTablesQueries = new List<string>();
+
+            var sb = new StringBuilder();
             // Use the name of the data object as the table name.
             sb.Append($"CREATE TABLE {type.Name}(");
             foreach (var item in type.GetProperties())
@@ -53,6 +61,19 @@ namespace OverviewRkiData.Components.Database
                         setType = true;
                     }
                     if (item.PropertyType == typeof(bool)) { sb.Append("INT,"); setType = true; }
+
+                    if (item.PropertyType == typeof(Int64[]) || 
+                        item.PropertyType == typeof(long[]))
+                    {
+                        // create subTable for the array
+                        listExtendDataToTablesQueries.Add(
+                            this.CreateTableByDataObjectString(
+                                type.Name, 
+                                item.Name, 
+                                typeof(long)));
+                        sb.Append($"INTEGER NOT NULL,");
+                        setType = true;
+                    }
                 }
 
                 if (!setType)
@@ -62,6 +83,17 @@ namespace OverviewRkiData.Components.Database
             }
 
             sb.Remove(sb.ToString().Length - 1, 1);
+            sb.Append(")");
+
+            return sb.ToString();
+        }
+
+        public string CreateTableByDataObjectString(string tableName, string itemName, Type type)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"CREATE TABLE {tableName}_{itemName}(");
+            sb.Append($"{tableName}_id, ");
+            sb.Append($"INTEGER NOT NULL");
             sb.Append(")");
 
             return sb.ToString();
@@ -81,6 +113,11 @@ namespace OverviewRkiData.Components.Database
         {
             var type = typeof(T);
 
+            return this.GetTableExist(type);
+        }
+
+        public string GetTableExist(Type type)
+        {
             if (type == null)
             {
                 throw new DatabaseQueryCreatorException("Can not check table exist. The type is not valid for create a query.");
@@ -309,7 +346,8 @@ namespace OverviewRkiData.Components.Database
                 throw new DatabaseQueryCreatorException("");
             }
 
-            return this.GetDataDelete(type.Name, ((ISQLiteData)data).Id);
+            // TODO: is only long not other type for primary key.
+            return this.GetDataDelete(type.Name, (long)hasPrimaryKeyAndAutoIncrementValue.GetValue(data));
         }
 
         /// <summary>
