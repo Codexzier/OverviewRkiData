@@ -6,7 +6,7 @@ using System;
 namespace OverviewRkiData.Test
 {
     [TestClass]
-    public class InsertDataToSQLiteDatabaseTest
+    public class InsertDataToSqLiteDatabaseTest
     {
         [TestMethod]
         public void InsertDataToDatabaseTest()

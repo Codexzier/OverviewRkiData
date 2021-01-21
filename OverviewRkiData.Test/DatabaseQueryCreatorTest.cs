@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OverviewRkiData.Components.Database;
 
 namespace OverviewRkiData.Test
@@ -13,10 +14,24 @@ namespace OverviewRkiData.Test
             var component = new DatabaseQueryCreator();
 
             // act
-            var query = component.GetCreateTableByDataObjectString<MyTestData>();
+            var query = component.GetCreateTableByDataObjectString<MyTestData>(out string[] extendArrayDataToTableQueries);
 
             // assert
             Assert.AreEqual("CREATE TABLE MyTestData(Id INTEGER PRIMARY KEY AUTOINCREMENT,MyText NVARCHAR NOT NULL)", query);
+        }
+
+        [TestMethod]
+        public void CreateQuery_CreateTable_SubTable_Test()
+        {
+            // arrange
+            var component = new DatabaseQueryCreator();
+
+            // act
+            var mainQuery = component.GetCreateTableByDataObjectString<MyTestDataSubData>(out string[] query);
+
+            // assert
+            Assert.AreEqual("CREATE TABLE MyTestDataSubData(Id INTEGER PRIMARY KEY AUTOINCREMENT,CollectionOfIntegerId INTEGER NOT NULL)", mainQuery);
+            Assert.AreEqual("CREATE TABLE MyTestDataSubData_CollectionOfInteger(MyTestDataSubData_id, CollectionOfInteger_item INTEGER NOT NULL)", query.First());
         }
 
         [TestMethod]
@@ -40,10 +55,26 @@ namespace OverviewRkiData.Test
             var testData = new MyTestData {MyText = "Hello"};
 
             // act
-            var query = component.GetDataInsert(testData);
+            var query = component.GetDataInsert(testData, out _);
 
             // assert
             Assert.AreEqual("INSERT INTO MyTestData (MyText) VALUES ('Hello')", query);
+        }
+
+        [TestMethod]
+        public void CreateQuery_GetDataInsert_SubTable_Test()
+        {
+            // arrange
+            var component = new DatabaseQueryCreator();
+            var testData = new MyTestDataSubData() { CollectionOfInteger = new []{12}};
+
+            // act
+            var query = component.GetDataInsert(testData, out var subTableInserts);
+
+            // assert
+            // TODO: eigentlich muss da kein Wert gesetzt werden.
+            Assert.AreEqual("INSERT INTO MyTestDataSubData () VALUES ()", query);
+            Assert.AreEqual("INSERT INTO MyTestDataSubData_CollectionOfInteger(MyTestDataSubData_id) VALUES (@MyTestDataSubData_id@, 12)", subTableInserts.First());
         }
 
         [TestMethod]

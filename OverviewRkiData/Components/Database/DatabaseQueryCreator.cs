@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -40,29 +38,30 @@ namespace OverviewRkiData.Components.Database
             foreach (var item in type.GetProperties())
             {
                 // Use property name for the column.
-                sb.Append(item.Name + " ");
+                sb.Append($"{item.Name}");
                 bool setType = false;
 
                 // TODO: need refactor this :D
                 if (IsPrimaryKeyAndAutoIncrement(item.CustomAttributes))
                 {
                     // Create primary key for automatic incrementing of the Id number
-                    if (item.PropertyType == typeof(Int64)) { sb.Append("INTEGER PRIMARY KEY AUTOINCREMENT,"); setType = true; }
+                    if (item.PropertyType == typeof(Int64)) { sb.Append(" INTEGER PRIMARY KEY AUTOINCREMENT,"); setType = true; }
                 }
                 else
                 {
                     // Determine data type and set the appropriate data type for the data table.
-                    if (item.PropertyType == typeof(int) || item.PropertyType == typeof(Int64)) { sb.Append("INT NOT NULL,"); setType = true; }
-                    if (item.PropertyType == typeof(string)) { sb.Append("NVARCHAR NOT NULL,"); setType = true; }
-                    if (item.PropertyType == typeof(DateTime)) { sb.Append("INTEGER NOT NULL,"); setType = true; }
+                    if (item.PropertyType == typeof(int) || item.PropertyType == typeof(Int64)) { sb.Append(" INT NOT NULL,"); setType = true; }
+                    if (item.PropertyType == typeof(string)) { sb.Append(" NVARCHAR NOT NULL,"); setType = true; }
+                    if (item.PropertyType == typeof(DateTime)) { sb.Append(" INTEGER NOT NULL,"); setType = true; }
                     if (item.PropertyType == typeof(decimal) || item.PropertyType == typeof(double))
                     {
                         sb.Append("DOUBLE NOT NULL,");
                         setType = true;
                     }
-                    if (item.PropertyType == typeof(bool)) { sb.Append("INT,"); setType = true; }
+                    if (item.PropertyType == typeof(bool)) { sb.Append(" INT,"); setType = true; }
 
-                    if (item.PropertyType == typeof(Int64[]) || 
+                    if (item.PropertyType == typeof(Int64[]) ||
+                        item.PropertyType == typeof(Int32[]) ||
                         item.PropertyType == typeof(long[]))
                     {
                         // create subTable for the array
@@ -71,7 +70,7 @@ namespace OverviewRkiData.Components.Database
                                 type.Name, 
                                 item.Name, 
                                 typeof(long)));
-                        sb.Append($"INTEGER NOT NULL,");
+                        sb.Append($"Id INTEGER NOT NULL,");
                         setType = true;
                     }
                 }
@@ -85,6 +84,9 @@ namespace OverviewRkiData.Components.Database
             sb.Remove(sb.ToString().Length - 1, 1);
             sb.Append(")");
 
+            // query for subTables
+            extendArrayDataToTableQueries = listExtendDataToTablesQueries.ToArray();
+
             return sb.ToString();
         }
 
@@ -93,7 +95,7 @@ namespace OverviewRkiData.Components.Database
             var sb = new StringBuilder();
             sb.Append($"CREATE TABLE {tableName}_{itemName}(");
             sb.Append($"{tableName}_id, ");
-            sb.Append($"INTEGER NOT NULL");
+            sb.Append($"{itemName}_item INTEGER NOT NULL");
             sb.Append(")");
 
             return sb.ToString();
@@ -142,8 +144,9 @@ namespace OverviewRkiData.Components.Database
         /// <typeparam name="T">Specify the data object.</typeparam>
         /// <param name="data">Pass finished data object with data.</param>
         /// <returns>Returns the finished command as a string.</returns>
-        public string GetDataInsert<T>(T data)
+        public string GetDataInsert<T>(T data, out string[] insertQueries)
         {
+            insertQueries = null;
             if (data == null)
             {
                 throw new DatabaseQueryCreatorException("Data can not be null. The type is not valid for create a query.");
@@ -156,6 +159,8 @@ namespace OverviewRkiData.Components.Database
             {
                 throw new DatabaseQueryCreatorException("Can not insert query. The type is not valid for create a query.");
             }
+
+            var collectionQuerySubTable = new List<string>();
 
             sb.Append($"INSERT INTO {type.Name} (");
             foreach (var item in type.GetProperties())
@@ -181,6 +186,19 @@ namespace OverviewRkiData.Components.Database
                     // TODO: Format by culture missing
                     sbValues.Append($"'{item.GetValue(data).ToString().Replace(',', '.')}',");
                 }
+                else if (item.PropertyType == typeof(Int64[]) ||
+                         item.PropertyType == typeof(Int32[]) ||
+                         item.PropertyType == typeof(long[]))
+                {
+                    // create subTable for the array
+                    collectionQuerySubTable.AddRange(
+                        this.GetInsertSubTableByDataObjectString(
+                            type.Name,
+                            item.Name,
+                            (Int32[])item.GetValue(data)));
+                    //sb.Append($"{item.Name},");
+                    //sbValues.Append($"1,");
+                }
                 else
                 {
                     sb.Append(item.Name + ",");
@@ -188,18 +206,46 @@ namespace OverviewRkiData.Components.Database
                 }
             }
 
-            sb.Remove(sb.ToString().Length - 1, 1);
+            if (sb.ToString().EndsWith(","))
+            {
+                sb.Remove(sb.ToString().Length - 1, 1);
+            }
             sb.Append(") ");
 
-            sbValues.Remove(sbValues.ToString().Length - 1, 1);
+            if (sbValues.Length > 0)
+            {
+                sbValues.Remove(sbValues.ToString().Length - 1, 1);
+            }
 
             sb.Append("VALUES (");
             sb.Append(sbValues.ToString());
             sb.Append(")");
-
-            // TODO: what is about sub objects?
+            
+            // insert queries for subTable
+            insertQueries = collectionQuerySubTable.ToArray();
 
             return sb.ToString();
+        }
+
+        private string[] GetInsertSubTableByDataObjectString(
+            string tableName, 
+            string itemName,
+            Int32[] values)
+        {
+            var queries = new List<string>();
+            // TODO: need optimized to the right sql statement for insert multiple data
+            foreach (var value in values)
+            {
+                var sb = new StringBuilder();
+                sb.Append($"INSERT INTO {tableName}_{itemName}({tableName}_id) ");
+                sb.Append("VALUES (");
+                sb.Append($"@{tableName}_id@, ");
+                sb.Append($"{value}");
+                sb.Append(")");
+                queries.Add(sb.ToString());
+            }
+            
+            return queries.ToArray();
         }
 
         #endregion

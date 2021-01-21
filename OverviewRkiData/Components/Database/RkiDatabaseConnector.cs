@@ -53,11 +53,14 @@ namespace OverviewRkiData.Components.Database
         {
             var tableName = typeof(T).Name;
 
-            var query = this._querys.GetCreateTableByDataObjectString<T>();
+            var query = this._querys.GetCreateTableByDataObjectString<T>(out var subTableQueries);
             if (!this.Exist<T>())
             {
                 this.DebugMessage($"created query: {query}");
                 var result = this.ExecuteQuery(query);
+
+                this.CreateSubTables(result, subTableQueries);
+
                 return result == 0 || result == 1;
             }
 
@@ -66,11 +69,25 @@ namespace OverviewRkiData.Components.Database
             return false;
         }
 
+        private void CreateSubTables(int result, string[] subTableQueries)
+        {
+            if (result == 1)
+            {
+                // create subTables
+                foreach (var extendArrayDataToTableQuery in subTableQueries)
+                {
+                    var subTableResult = this.ExecuteQuery(extendArrayDataToTableQuery);
+
+                    this.DebugMessage($"Create subTable: {subTableResult}");
+                }
+            }
+        }
+
         public bool Create(Type type)
         {
             var tableName = type.Name;
 
-            var query = this._querys.GetCreateTableByDataObjectString(type);
+            var query = this._querys.GetCreateTableByDataObjectString(type, out var subTableQueries);
             if (!this.Exist(type))
             {
                 this.DebugMessage($"created query: {query}");
@@ -138,7 +155,7 @@ namespace OverviewRkiData.Components.Database
         /// <returns>Returns true if a record could be saved.</returns>
         public bool Insert<T>(T data)
         {
-            var query = this._querys.GetDataInsert(data);
+            var query = this._querys.GetDataInsert(data, out var insertQueries);
             this.DebugMessage($"created query: {query}");
             var result = this.ExecuteQuery(query);
             
