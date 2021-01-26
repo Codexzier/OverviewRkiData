@@ -1,13 +1,13 @@
 ﻿using OverviewRkiData.Components.Ui.Anims;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace OverviewRkiData.Controls.Diagram
 {
-    public partial class DiagramControl : UserControl
+    public partial class DiagramControl 
     {
         public double Scale
         {
@@ -38,8 +38,6 @@ namespace OverviewRkiData.Controls.Diagram
         {
             if (d is DiagramControl control)
             {
-              
-
                 SetValueToRects(control);
             }
         }
@@ -64,7 +62,7 @@ namespace OverviewRkiData.Controls.Diagram
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                var rect = new System.Windows.Shapes.Rectangle
+                var rect = new Rectangle
                 {
                     Fill = new SolidColorBrush(Color.FromArgb(255, 138, 187, 219)),
                     VerticalAlignment = VerticalAlignment.Bottom,
@@ -79,8 +77,28 @@ namespace OverviewRkiData.Controls.Diagram
                     storyboard,
                     new Thickness(0, 0, 0, rect.Height * -1),
                     new Thickness(0),
-                    delay * 20,
-                    100);
+                    delay * 20);
+
+                rect.MouseEnter += (e, r) =>
+                {
+                    if (!(e is Rectangle subRect))
+                    {
+                        return;
+                    }
+
+                    subRect.Fill = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
+                };
+
+                rect.MouseLeave += (e, r) =>
+                {
+                    if (!(e is Rectangle subRect))
+                    {
+                        return;
+                    }
+
+                    subRect.Fill = new SolidColorBrush(Color.FromArgb(255, 138, 187, 219));
+                };
+
                 control.SimpleDiagram.Children.Add(rect);
                 storyboard.Begin();
                 delay++;
