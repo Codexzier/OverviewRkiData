@@ -1,9 +1,7 @@
 ﻿using OverviewRkiData.Components.Ui.Anims;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace OverviewRkiData.Controls.Diagram
 {
@@ -42,6 +40,9 @@ namespace OverviewRkiData.Controls.Diagram
             }
         }
 
+        // TODO: Not sure, but I have an idea.
+        private readonly IList<BarItem> _barItems = new List<BarItem>();
+
         private static void SetValueToRects(DiagramControl control)
         {
             if (control.RkiCountyData == null)
@@ -49,11 +50,13 @@ namespace OverviewRkiData.Controls.Diagram
                 return;
             }
 
+            control._barItems.Clear();
             control.SimpleDiagram.Children.Clear();
 
             var heightScale = control.ActualHeight / 200d;
 
             control.OneHundred.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
+            control.OneHundredText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
 
             var widthPerResult = control.ActualWidth / control.RkiCountyData.Count;
 
@@ -62,46 +65,20 @@ namespace OverviewRkiData.Controls.Diagram
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                var rect = new Rectangle
-                {
-                    Fill = new SolidColorBrush(Color.FromArgb(255, 138, 187, 219)),
-                    VerticalAlignment = VerticalAlignment.Bottom,
-                    Width = widthPerResult,
-                    Height = heightValue,
-                    ToolTip = item.ToolTipText,
-                    Margin = new Thickness(0, 0, 0, heightValue * -1)
-                };
+                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value);
 
                 var storyboard = new Storyboard();
-                Animations.SetMove(rect,
+                Animations.SetMove(barItem.Bar,
                     storyboard,
-                    new Thickness(0, 0, 0, rect.Height * -1),
+                    new Thickness(0, 0, 0, barItem.Bar.Height * -1),
                     new Thickness(0),
                     delay * 20);
-
-                rect.MouseEnter += (e, r) =>
-                {
-                    if (!(e is Rectangle subRect))
-                    {
-                        return;
-                    }
-
-                    subRect.Fill = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
-                };
-
-                rect.MouseLeave += (e, r) =>
-                {
-                    if (!(e is Rectangle subRect))
-                    {
-                        return;
-                    }
-
-                    subRect.Fill = new SolidColorBrush(Color.FromArgb(255, 138, 187, 219));
-                };
-
-                control.SimpleDiagram.Children.Add(rect);
+                
+                control.SimpleDiagram.Children.Add(barItem.Bar);
                 storyboard.Begin();
                 delay++;
+
+                control._barItems.Add(barItem);
             }
         }
 

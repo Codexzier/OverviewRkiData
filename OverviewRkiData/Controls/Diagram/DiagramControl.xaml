@@ -9,19 +9,27 @@
               SizeChanged="UserControl_SizeChanged">
     <Grid>
         <Border BorderThickness="1" 
-                BorderBrush="{StaticResource BrushMonochromatischGreen_E}" >
+                BorderBrush="{StaticResource BrushMonochromatischGreen_E}" 
+                Margin="20 0 0 0">
             <StackPanel x:Name="SimpleDiagram" 
                     Orientation="Horizontal" 
                     FlowDirection="LeftToRight" 
                     HorizontalAlignment="Left" />
         </Border>
 
+        <TextBlock x:Name="OneHundredText" Text="100" 
+                   Foreground="{StaticResource BrushMonochromatischGreen_E}"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="9"
+                   Margin="0 0 0 0"/>
         <Path x:Name="OneHundred" 
-              Width="30"
-              Data="M0,0L 10,0 z"
+              Width="20"
+              Data="M 0,0 20,0 z"
               Stroke="{StaticResource BrushMonochromatischGreen_E}" 
               StrokeThickness="2" 
               HorizontalAlignment="Left" 
-              VerticalAlignment="Bottom" />
+              VerticalAlignment="Bottom" 
+              Margin="0 0 0 10"/>
     </Grid>
 </UserControl>
