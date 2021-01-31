@@ -8,7 +8,12 @@ namespace OverviewRkiData.Controls.Diagram
     {
         public Rectangle Bar { get; }
 
-        public BarItem(double widthPerResult, double heightValue, string toolTipText, double itemValue)
+        public BarItem(
+            double widthPerResult, 
+            double heightValue, 
+            string toolTipText, 
+            double itemValue,
+            bool setHighlightMark)
         {
             var barColorNormal = new SolidColorBrush(this.SetUpValueIfOverHundred(itemValue));
             var barColorHighlighted = new SolidColorBrush(Color.FromArgb(255, 160, 200, 219));
@@ -22,6 +27,12 @@ namespace OverviewRkiData.Controls.Diagram
                 ToolTip = toolTipText,
                 Margin = new Thickness(0, 0, 0, heightValue * -1)
             };
+
+            if (setHighlightMark)
+            {
+                this.Bar.StrokeThickness = 3;
+                this.Bar.Stroke = new SolidColorBrush(Color.FromArgb(255, 200, 250, 219));
+            }
 
             this.Bar.MouseEnter += (e, r) =>
             {

@@ -83,10 +83,17 @@ namespace OverviewRkiData.Views.County
                 {
                     var result = HelperExtension.GetCountyResults(districtItem.Name);
 
-                    this._viewModel.CountyResults = result.Select(s =>
+                    var enumerable = result as Landkreis[] ?? result.ToArray();
+                    this._viewModel.CountyResults = enumerable.Select(s =>
                     {
                         var toolTip = $"{s.Date:d} | {s.WeekIncidence:N1} | {s.Deaths}";
-                        return new DiagramLevelItem { Value = s.WeekIncidence, ToolTipText = toolTip };
+                        return new DiagramLevelItem { Value = s.WeekIncidence, ToolTipText = toolTip, SetHighlightMark = s.Date.Day == 1};
+                    }).ToList();
+
+                    this._viewModel.CountyDeathResults = enumerable.Select(s =>
+                    {
+                        var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.Deaths}";
+                        return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
                     }).ToList();
 
                 });

@@ -60,12 +60,12 @@ namespace OverviewRkiData.Controls.Diagram
 
             var widthPerResult = control.ActualWidth / control.RkiCountyData.Count;
 
-            int delay = 1;
+            var delay = 1;
             foreach (var item in control.RkiCountyData)
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value);
+                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value, item.SetHighlightMark);
 
                 var storyboard = new Storyboard();
                 Animations.SetMove(barItem.Bar,

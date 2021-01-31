@@ -20,6 +20,7 @@ namespace OverviewRkiData.Views.County
         }
 
         private List<DiagramLevelItem> _countyResults;
+        private List<DiagramLevelItem> _countyDeathResults;
 
         public List<DiagramLevelItem> CountyResults
         {
@@ -28,6 +29,16 @@ namespace OverviewRkiData.Views.County
             {
                 this._countyResults = value;
                 this.OnNotifyPropertyChanged(nameof(this.CountyResults));
+            }
+        }
+
+        public List<DiagramLevelItem> CountyDeathResults
+        {
+            get => this._countyDeathResults;
+            set
+            {
+                this._countyDeathResults = value;
+                this.OnNotifyPropertyChanged(nameof(this.CountyDeathResults));
             }
         }
     }

@@ -4,5 +4,7 @@
     {
         public double Value { get; set; }
         public string ToolTipText { get; set; }
+
+        public bool SetHighlightMark { get; set; }
     }
 }
