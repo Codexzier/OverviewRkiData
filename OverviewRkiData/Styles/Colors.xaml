@@ -8,7 +8,8 @@
     <Color x:Key="ColorMonochromatischGreen_C">#8ABBDB</Color>
     <Color x:Key="ColorMonochromatischGreen_D">#1E435C</Color>
     <Color x:Key="ColorMonochromatischGreen_E">#6A8FA8</Color>
-    
+
+    <Color x:Key="ColorButtonTransparentBlack">#DF1C1C1C</Color>
 
     <Color x:Key="ColorBlack">#FF1C1C1C</Color>
     <Color x:Key="ColorGrayDark">#FF2C2C2C</Color>

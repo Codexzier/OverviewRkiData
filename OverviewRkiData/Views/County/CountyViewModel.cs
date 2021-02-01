@@ -2,10 +2,11 @@
 using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Data;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace OverviewRkiData.Views.County
 {
-    internal class CountyViewModel : BaseViewModel
+    public class CountyViewModel : BaseViewModel
     {
         private DistrictItem _districtData;
 
@@ -39,6 +40,18 @@ namespace OverviewRkiData.Views.County
             {
                 this._countyDeathResults = value;
                 this.OnNotifyPropertyChanged(nameof(this.CountyDeathResults));
+            }
+        }
+
+
+        private ICommand _commandCreatePicture;
+        public ICommand CommandCreatePicture
+        {
+            get => this._commandCreatePicture;
+            set
+            {
+                this._commandCreatePicture = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandCreatePicture));
             }
         }
     }

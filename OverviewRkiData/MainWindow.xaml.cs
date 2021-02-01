@@ -5,8 +5,11 @@ using OverviewRkiData.Components.UserSettings;
 using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Main;
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace OverviewRkiData
 {
@@ -18,6 +21,8 @@ namespace OverviewRkiData
         public MainWindow()
         {
             this.InitializeComponent();
+
+
             
             this.Prepare();
 
@@ -30,6 +35,11 @@ namespace OverviewRkiData
 
         private void Prepare()
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
             new ShiftDataToSubFolder().MoveRkiDataFilesFromCurrentApplicationFolderToSubFolder();
 
            // new InsertDataToSQLiteDatabase().Import();

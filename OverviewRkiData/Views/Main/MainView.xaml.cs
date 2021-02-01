@@ -44,18 +44,20 @@ namespace OverviewRkiData.Views.Main
                         return;
                     }
 
+                    // TODO aktuell wird nicht im jeden Datensatz das Datum hinterlegt.
                     var di = landkreise.Districts.Select(s => new DistrictItem
                     {
                         Name = s.Name,
                         Deaths = s.Deaths,
-                        WeekIncidence = s.WeekIncidence
+                        WeekIncidence = s.WeekIncidence,
+                        Date = landkreise.Date
                     });
 
                     StaticDataManager.ActualLoadedDataDate = landkreise.Date;
                     StaticDataManager.ActualLoadedData = di;
                 }
 
-                this._viewModel.ActualDataFromDate = StaticDataManager.ActualLoadedDataDate.ToShortDateString();
+                this._viewModel.ActualDataFromDate = StaticDataManager.ActualLoadedDataDate;
 
                 this.Dispatcher.Invoke(() =>
                 {

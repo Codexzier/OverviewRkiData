@@ -54,7 +54,7 @@
                     BorderBrush="{StaticResource BrushMonochromatischGreen_E}" 
                     BorderThickness="0 1 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ActualDataFromDate}" />
+                    <TextBlock Text="{Binding ActualDataFromDate, StringFormat=d}" />
                     <TextBlock Text="{Binding CountyCount}" />
                 </StackPanel>
             </Border>

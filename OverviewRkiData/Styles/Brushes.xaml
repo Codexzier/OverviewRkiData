@@ -11,6 +11,9 @@
     <SolidColorBrush x:Key="BrushMonochromatischGreen_D" Color="{StaticResource ColorMonochromatischGreen_D}" />
     <SolidColorBrush x:Key="BrushMonochromatischGreen_E" Color="{StaticResource ColorMonochromatischGreen_E}" />
 
+
+    <SolidColorBrush x:Key="BrushButtonTransparentBlack" Color="{StaticResource ColorButtonTransparentBlack}" />
+
     <SolidColorBrush x:Key="BrushBlack" Color="{StaticResource ColorBlack}" />
     <SolidColorBrush x:Key="BrushGrayDark" Color="{StaticResource ColorGrayDark}" />
     <SolidColorBrush x:Key="BrushGrayDarkLight" Color="{StaticResource ColorGrayDarkLight}" />

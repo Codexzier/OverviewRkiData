@@ -6,9 +6,12 @@ using OverviewRkiData.Controls.Diagram;
 using OverviewRkiData.Views.Data;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using OverviewRkiData.Views.Main;
+using OverviewRkiData.Views.RenderPicture;
 
 namespace OverviewRkiData.Views.County
 {
@@ -30,6 +33,8 @@ namespace OverviewRkiData.Views.County
 
             EventBusManager.Register<CountyView, BaseMessage>(this.CountyMessageEvent);
             this.InitializeAnimation();
+
+            this._viewModel.CommandCreatePicture = new ButtonCommandCreatePicture(this._viewModel, this.RenderPicturePrint);
         }
 
         private void InitializeAnimation()
@@ -95,6 +100,16 @@ namespace OverviewRkiData.Views.County
                         var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.Deaths}";
                         return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
                     }).ToList();
+
+                    this.Dispatcher.Invoke( delegate 
+                    {
+                        this.RenderPicturePrint.DataContext = new RenderPicturePrintViewModel
+                        {
+                            CountyResults = this._viewModel.CountyResults,
+                            DistrictData = this._viewModel.DistrictData
+                        };
+                    });
+                 
 
                 });
             }

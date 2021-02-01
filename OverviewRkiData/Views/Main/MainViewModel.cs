@@ -1,4 +1,5 @@
-﻿using OverviewRkiData.Views.Base;
+﻿using System;
+using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace OverviewRkiData.Views.Main
         private DistrictItem _selected;
         private string _searchCounty;
         private ICommand _commandSelectedDistrict;
-        private string _actualDataFromDate;
+        private DateTime _actualDataFromDate;
         private ICommand _commandSortByWeekIncidence;
         private ICommand _commandSortByDeaths;
         private int _countyCount;
@@ -71,7 +72,7 @@ namespace OverviewRkiData.Views.Main
             }
         }
 
-        public string ActualDataFromDate
+        public DateTime ActualDataFromDate
         {
             get => this._actualDataFromDate;
             set
@@ -110,5 +111,7 @@ namespace OverviewRkiData.Views.Main
                 this.OnNotifyPropertyChanged(nameof(this.CommandSortByDeaths));
             }
         }
+
+
     }
 }

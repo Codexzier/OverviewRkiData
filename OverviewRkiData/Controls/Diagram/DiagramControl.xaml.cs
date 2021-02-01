@@ -1,5 +1,6 @@
 ﻿using OverviewRkiData.Components.Ui.Anims;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -20,14 +21,24 @@ namespace OverviewRkiData.Controls.Diagram
                 typeof(DiagramControl),
                 new PropertyMetadata(2.5, UpdateDiagram));
 
-        public List<DiagramLevelItem> RkiCountyData
+
+        public static readonly DependencyProperty AnimationOnProperty = DependencyProperty.Register(
+            "AnimationOn", typeof(bool), typeof(DiagramControl), new PropertyMetadata(true));
+
+        public bool AnimationOn
         {
-            get => (List<DiagramLevelItem>)this.GetValue(RkiCountyDataProperty);
-            set => this.SetValue(RkiCountyDataProperty, value);
+            get => (bool) this.GetValue(AnimationOnProperty);
+            set => this.SetValue(AnimationOnProperty, value);
         }
 
-        public static readonly DependencyProperty RkiCountyDataProperty =
-            DependencyProperty.RegisterAttached("RkiCountyData",
+        public List<DiagramLevelItem> DiagramLevelItemsSource
+        {
+            get => (List<DiagramLevelItem>)this.GetValue(DiagramLevelItemsSourceProperty);
+            set => this.SetValue(DiagramLevelItemsSourceProperty, value);
+        }
+
+        public static readonly DependencyProperty DiagramLevelItemsSourceProperty =
+            DependencyProperty.RegisterAttached("DiagramLevelItemsSource",
                 typeof(List<DiagramLevelItem>),
                 typeof(DiagramControl),
                 new PropertyMetadata(new List<DiagramLevelItem>(), UpdateDiagram));
@@ -45,9 +56,14 @@ namespace OverviewRkiData.Controls.Diagram
 
         private static void SetValueToRects(DiagramControl control)
         {
-            if (control.RkiCountyData == null)
+            if (control.DiagramLevelItemsSource == null)
             {
                 return;
+            }
+
+            if (control.ActualWidth == 0d || control.ActualHeight == 0d)
+            {
+                control.RenderSize = new Size(control.Width, control.Height);
             }
 
             control._barItems.Clear();
@@ -58,14 +74,22 @@ namespace OverviewRkiData.Controls.Diagram
             control.OneHundred.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
             control.OneHundredText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
 
-            var widthPerResult = control.ActualWidth / control.RkiCountyData.Count;
+            var widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
 
             var delay = 1;
-            foreach (var item in control.RkiCountyData)
+            foreach (var item in control.DiagramLevelItemsSource)
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value, item.SetHighlightMark);
+                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value, item.SetHighlightMark, control.AnimationOn);
+                
+                control.SimpleDiagram.Children.Add(barItem.Bar);
+                control._barItems.Add(barItem);
+
+                if (!control.AnimationOn)
+                {
+                    continue;
+                }
 
                 var storyboard = new Storyboard();
                 Animations.SetMove(barItem.Bar,
@@ -73,12 +97,10 @@ namespace OverviewRkiData.Controls.Diagram
                     new Thickness(0, 0, 0, barItem.Bar.Height * -1),
                     new Thickness(0),
                     delay * 20);
-                
-                control.SimpleDiagram.Children.Add(barItem.Bar);
+
                 storyboard.Begin();
                 delay++;
 
-                control._barItems.Add(barItem);
             }
         }
 
