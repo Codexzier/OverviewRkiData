@@ -57,12 +57,16 @@
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" />
 
-            <Button Grid.Column="1" 
-                    Grid.Row="3" 
-                    Content="OK" 
-                    HorizontalAlignment="Center" 
-                    Width="140"
-                    Click="ButtonOk_Click" />
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="{Binding LabelAccept}" 
+                        HorizontalAlignment="Center" 
+                        Height="100"
+                        Command="{Binding CommandAccept}"/>
+                <Button Content="Cancel" 
+                        HorizontalAlignment="Center" 
+                        Height="100"
+                        Command="{Binding CommandCancel}" />
+            </StackPanel>
         </Grid>
     </Grid>
     

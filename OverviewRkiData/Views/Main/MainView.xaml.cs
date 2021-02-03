@@ -1,4 +1,5 @@
-﻿using OverviewRkiData.Commands;
+﻿using System;
+using OverviewRkiData.Commands;
 using OverviewRkiData.Components.RkiCoronaLandkreise;
 using OverviewRkiData.Components.Ui.EventBus;
 using OverviewRkiData.Views.Base;
@@ -36,7 +37,12 @@ namespace OverviewRkiData.Views.Main
                 {
                     var component = RkiCoronaLandkreiseComponent.GetInstance();
                     component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
-                    var landkreise = component.LoadData();
+                    var landkreise = component.LoadData(out Action<bool> safeData);
+
+                    if (safeData != null)
+                    {
+                        SimpleStatusOverlays.ShowAsk("Question", "Overwrite local data with actual loaded data?", safeData);
+                    }
 
                     if (landkreise == null)
                     {

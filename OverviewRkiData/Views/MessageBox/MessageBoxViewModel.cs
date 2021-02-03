@@ -1,4 +1,5 @@
-﻿using OverviewRkiData.Views.Base;
+﻿using System.Windows.Input;
+using OverviewRkiData.Views.Base;
 
 namespace OverviewRkiData.Views.MessageBox
 {
@@ -6,6 +7,9 @@ namespace OverviewRkiData.Views.MessageBox
     {
         private string _title;
         private string _message;
+        private ICommand _commandCancel;
+        private ICommand _commandAccept;
+        private string _labelAccept;
 
         public string Title
         {
@@ -24,6 +28,36 @@ namespace OverviewRkiData.Views.MessageBox
             {
                 this._message = value;
                 this.OnNotifyPropertyChanged(nameof(this.Message));
+            }
+        }
+
+        public string LabelAccept
+        {
+            get => this._labelAccept;
+            set
+            {
+                this._labelAccept = value;
+                this.OnNotifyPropertyChanged(nameof(this.LabelAccept));
+            }
+        }
+
+        public ICommand CommandAccept
+        {
+            get => this._commandAccept;
+            set
+            {
+                this._commandAccept = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandAccept));
+            }
+        }
+
+        public ICommand CommandCancel
+        {
+            get => this._commandCancel;
+            set
+            {
+                this._commandCancel = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandCancel));
             }
         }
     }

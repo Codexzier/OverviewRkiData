@@ -5,6 +5,7 @@
         Nothing,
         Main,
         MessageBox,
+        AskBox,
         Setup,
         Import
     }

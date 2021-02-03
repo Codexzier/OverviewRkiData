@@ -20,8 +20,9 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
 
         public static RkiCoronaLandkreiseComponent GetInstance() => _singleton ??= new RkiCoronaLandkreiseComponent();
 
-        public Landkreise LoadData(bool loadForceFromInternet = false)
+        public Landkreise LoadData(out Action<bool> saveIf, bool loadForceFromInternet = false)
         {
+            saveIf = null;
             var filename = HelperExtension.CreateFilename();
 
             if (!UserSettingsLoader.GetInstance().Load().LoadRkiDataByApplicationStart &&
@@ -54,7 +55,20 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
                 return null;
             }
 
-            this.SaveToFile(result, filename);
+            if (filename == HelperExtension.CreateFilename())
+            {
+                // TODO: prüfen ob aktuell gespeicherte Daten identisch sind
+
+                saveIf = canSave =>
+                {
+                    if (!canSave)
+                    {
+                        return;
+                    }
+                    this.SaveToFile(result, filename);
+                };
+            }
+
             return result;
         }
 
