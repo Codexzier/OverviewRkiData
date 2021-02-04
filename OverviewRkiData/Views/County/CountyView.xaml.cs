@@ -4,14 +4,12 @@ using OverviewRkiData.Components.Ui.Anims;
 using OverviewRkiData.Components.Ui.EventBus;
 using OverviewRkiData.Controls.Diagram;
 using OverviewRkiData.Views.Data;
+using OverviewRkiData.Views.RenderPicture;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using OverviewRkiData.Views.Main;
-using OverviewRkiData.Views.RenderPicture;
 
 namespace OverviewRkiData.Views.County
 {
@@ -89,10 +87,22 @@ namespace OverviewRkiData.Views.County
                     var result = HelperExtension.GetCountyResults(districtItem.Name);
 
                     var enumerable = result as Landkreis[] ?? result.ToArray();
+
+                    var lastDay = 1;
                     this._viewModel.CountyResults = enumerable.Select(s =>
                     {
                         var toolTip = $"{s.Date:d} | {s.WeekIncidence:N1} | {s.Deaths}";
-                        return new DiagramLevelItem { Value = s.WeekIncidence, ToolTipText = toolTip, SetHighlightMark = s.Date.Day == 1};
+                        
+                        var temp = new DiagramLevelItem
+                        {
+                            Value = s.WeekIncidence, 
+                            ToolTipText = toolTip, 
+                            SetHighlightMark = s.Date.Day == 1 || s.Date.Day < lastDay
+                        };
+
+                        lastDay = s.Date.Day;
+                        
+                        return temp;
                     }).ToList();
 
                     this._viewModel.CountyDeathResults = enumerable.Select(s =>
@@ -101,15 +111,15 @@ namespace OverviewRkiData.Views.County
                         return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
                     }).ToList();
 
-                    this.Dispatcher.Invoke( delegate 
-                    {
-                        this.RenderPicturePrint.DataContext = new RenderPicturePrintViewModel
-                        {
-                            CountyResults = this._viewModel.CountyResults,
-                            DistrictData = this._viewModel.DistrictData
-                        };
-                    });
-                 
+                    this.Dispatcher.Invoke(delegate
+                   {
+                       this.RenderPicturePrint.DataContext = new RenderPicturePrintViewModel
+                       {
+                           CountyResults = this._viewModel.CountyResults,
+                           DistrictData = this._viewModel.DistrictData
+                       };
+                   });
+
 
                 });
             }
