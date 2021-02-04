@@ -2,7 +2,6 @@
 using OverviewRkiData.Components.Data;
 using OverviewRkiData.Components.UserSettings;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,21 +56,36 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
 
             if (filename == HelperExtension.CreateFilename())
             {
-                // TODO: prüfen ob aktuell gespeicherte Daten identisch sind
-
-                saveIf = canSave =>
+                if (!File.Exists(filename))
                 {
-                    if (!canSave)
-                    {
-                        return;
-                    }
                     this.SaveToFile(result, filename);
-                };
+                }
+                else
+                {
+                    if(IsDifferent(filename, result))
+                    {
+                        saveIf = canSave =>
+                        {
+                            if (!canSave)
+                            {
+                                return;
+                            }
+                            this.SaveToFile(result, filename);
+                        };
+                    }
+                }
             }
 
             return result;
         }
 
+        private static bool IsDifferent(string filename, Landkreise landkreise)
+        {
+            var rawResult = JsonConvert.SerializeObject(landkreise);
+            var localRaw = File.ReadAllText(filename);
+            return localRaw.Length != rawResult.Length;
+        }
+        
         private static string GetLastLoadedData()
         {
             var last = HelperExtension.GetFiles().Select(s => new FileInfo(s)).OrderBy(w =>
@@ -161,15 +175,15 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
                 Headers = {[HttpRequestHeader.ContentType] = "application/json"}
             };
 
-            var result = client.DownloadString(UrlGenCasesDeathsWeekIncidence);
+            var rawResult = client.DownloadString(UrlGenCasesDeathsWeekIncidence);
 
-            if (result.ToLower().Contains("error") || string.IsNullOrEmpty(result))
+            if (rawResult.ToLower().Contains("error") || string.IsNullOrEmpty(rawResult))
             {
                 this.RkiDataErrorEvent?.Invoke("Fehler beim abrufen der Daten.");
                 return null;
             }
 
-            return JsonConvert.DeserializeObject<RkiCoronaLandkreiseResult>(result);
+            return JsonConvert.DeserializeObject<RkiCoronaLandkreiseResult>(rawResult);
         }
 
         public delegate void RkiDataErrorEventHandler(string message);
