@@ -83,7 +83,7 @@
                     Value="1" 
                     HorizontalAlignment="Stretch" />
 
-            <Button Grid.Column="2" Grid.Row="12" Content="Create Picture" Command="{Binding CommandCreatePicture}" />
+            <Button Grid.Column="2" Grid.Row="12" Content="Create Picture" Command="{Binding CommandCreatePicture}" Visibility="Collapsed" />
         </Grid>
 
        
