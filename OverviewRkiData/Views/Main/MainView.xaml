@@ -41,6 +41,7 @@
                       Grid.RowSpan="2"
                       RenderOptions.CachingHint="Cache"
                       ItemsSource="{Binding Districts}" 
+                      VerticalScrollBarVisibility="Visible"
                       SelectedItem="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" 
                       Margin="0,1,0,26">
                 <DataGrid.Columns>

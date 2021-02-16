@@ -53,6 +53,9 @@ namespace OverviewRkiData.Controls.Diagram
 
         // TODO: Not sure, but I have an idea.
         private readonly IList<BarItem> _barItems = new List<BarItem>();
+        private int _hashValue = -1;
+
+
 
         private static void SetValueToRects(DiagramControl control)
         {
@@ -75,6 +78,8 @@ namespace OverviewRkiData.Controls.Diagram
             control.OneHundredText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
 
             var widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
+
+          
 
             var delay = 1;
             foreach (var item in control.DiagramLevelItemsSource)
