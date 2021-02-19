@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="/OverviewRkiData;component/Styles/Checkboxes.xaml" />
                 <ResourceDictionary Source="/OverviewRkiData;component/Styles/TextBlocks.xaml" />
                 <ResourceDictionary Source="/OverviewRkiData;component/Styles/ProgressBar.xaml" />
+                <ResourceDictionary Source="/OverviewRkiData;component/Styles/ToolTip.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="PasswordBox">
