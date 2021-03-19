@@ -13,10 +13,7 @@ using System.Windows.Media.Animation;
 
 namespace OverviewRkiData.Views.County
 {
-    /// <summary>
-    /// Interaction logic for CountyView.xaml
-    /// </summary>
-    public partial class CountyView : UserControl
+    public partial class CountyView
     {
         private readonly CountyViewModel _viewModel;
 

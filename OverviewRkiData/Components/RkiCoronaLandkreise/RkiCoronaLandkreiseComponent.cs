@@ -53,26 +53,30 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
             {
                 return null;
             }
+            
+            result.Districts.InsertGermanyIfNotList(result.Date);
 
-            if (filename == HelperExtension.CreateFilename())
+            if (filename != HelperExtension.CreateFilename())
             {
-                if (!File.Exists(filename))
+                return result;
+            }
+
+            if (!File.Exists(filename))
+            {
+                this.SaveToFile(result, filename);
+            }
+            else
+            {
+                if(IsDifferent(filename, result))
                 {
-                    this.SaveToFile(result, filename);
-                }
-                else
-                {
-                    if(IsDifferent(filename, result))
+                    saveIf = canSave =>
                     {
-                        saveIf = canSave =>
+                        if (!canSave)
                         {
-                            if (!canSave)
-                            {
-                                return;
-                            }
-                            this.SaveToFile(result, filename);
-                        };
-                    }
+                            return;
+                        }
+                        this.SaveToFile(result, filename);
+                    };
                 }
             }
 
@@ -112,6 +116,8 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
             if (actualDateTime.Equals(lastUpdateTime))
             {
                 var resultFromFile = this.LoadFromFile(filename);
+                
+                resultFromFile.Districts.InsertGermanyIfNotList(resultFromFile.Date);
 
                 if (resultFromFile
                     .Date
@@ -124,7 +130,7 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
 
             return null;
         }
-
+        
         private Landkreise ConvertToLandkreise(RkiCoronaLandkreiseResult result)
         {
             var lk = result.features.FirstOrDefault();

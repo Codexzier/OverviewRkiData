@@ -27,6 +27,7 @@ namespace OverviewRkiData.Views.Main
         private ICommand _commandSortByWeekIncidence;
         private ICommand _commandSortByDeaths;
         private int _countyCount;
+        private float _completeIncidence;
 
         public ObservableCollection<DistrictItem> Districts
         {
@@ -111,7 +112,5 @@ namespace OverviewRkiData.Views.Main
                 this.OnNotifyPropertyChanged(nameof(this.CommandSortByDeaths));
             }
         }
-
-
     }
 }

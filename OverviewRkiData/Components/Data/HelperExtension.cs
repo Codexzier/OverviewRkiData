@@ -42,8 +42,12 @@ namespace OverviewRkiData.Components.Data
             var list = new List<Landkreis>();
             foreach (var filename in GetFiles())
             {
-                var result = RkiCoronaLandkreiseComponent.GetInstance()
+                var result = RkiCoronaLandkreiseComponent
+                    .GetInstance()
                     .LoadFromFile(filename);
+                
+                result.Districts.InsertGermanyIfNotList(result.Date);
+                
                 var v = result
                     .Districts
                     .FirstOrDefault(w => w.Name.Equals(name));

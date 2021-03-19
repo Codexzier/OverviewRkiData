@@ -33,34 +33,9 @@ namespace OverviewRkiData.Views.Main
 
             await Task.Run(() =>
             {
-                if (arg.Content is BaseMessageOptions option && option == BaseMessageOptions.LoadActualData)
+                if (this.CheckOptionAndLoadLandkreise(arg))
                 {
-                    var component = RkiCoronaLandkreiseComponent.GetInstance();
-                    component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
-                    var landkreise = component.LoadData(out Action<bool> safeData);
-
-                    if (safeData != null)
-                    {
-                        SimpleStatusOverlays.ShowAsk("Question", "Overwrite local data with actual loaded data?", safeData);
-                    }
-
-                    if (landkreise == null)
-                    {
-                        SimpleStatusOverlays.ActivityOff();
-                        return;
-                    }
-
-                    // TODO aktuell wird nicht im jeden Datensatz das Datum hinterlegt.
-                    var di = landkreise.Districts.Select(s => new DistrictItem
-                    {
-                        Name = s.Name,
-                        Deaths = s.Deaths,
-                        WeekIncidence = s.WeekIncidence,
-                        Date = landkreise.Date
-                    });
-
-                    StaticDataManager.ActualLoadedDataDate = landkreise.Date;
-                    StaticDataManager.ActualLoadedData = di;
+                    return;
                 }
 
                 this._viewModel.ActualDataFromDate = StaticDataManager.ActualLoadedDataDate;
@@ -79,9 +54,45 @@ namespace OverviewRkiData.Views.Main
                         this._viewModel.CountyCount++;
                     });
                 }
-                
+
                 SimpleStatusOverlays.ActivityOff();
             });
+        }
+
+        private bool CheckOptionAndLoadLandkreise(IMessageContainer arg)
+        {
+            if (arg.Content is BaseMessageOptions option && option == BaseMessageOptions.LoadActualData)
+            {
+                var component = RkiCoronaLandkreiseComponent.GetInstance();
+                component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
+
+                var landkreise = component.LoadData(out var safeData);
+
+                if (safeData != null)
+                {
+                    SimpleStatusOverlays.ShowAsk("Question", "Overwrite local data with actual loaded data?", safeData);
+                }
+
+                if (landkreise == null)
+                {
+                    SimpleStatusOverlays.ActivityOff();
+                    return true;
+                }
+
+                // TODO aktuell wird nicht im jeden Datensatz das Datum hinterlegt.
+                var districtItems = landkreise.Districts.Select(s => new DistrictItem
+                {
+                    Name = s.Name,
+                    Deaths = s.Deaths,
+                    WeekIncidence = s.WeekIncidence,
+                    Date = landkreise.Date
+                });
+
+                StaticDataManager.ActualLoadedDataDate = landkreise.Date;
+                StaticDataManager.ActualLoadedData = districtItems;
+            }
+
+            return false;
         }
 
         private void Component_RkiDataErrorEvent(string message) => SimpleStatusOverlays.Show("ERROR", message);
