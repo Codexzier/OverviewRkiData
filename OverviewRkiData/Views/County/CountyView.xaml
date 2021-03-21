@@ -47,14 +47,35 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="tbDescription_Name" Grid.Column="0" Grid.Row="0" Text="Name" />
-            <TextBlock x:Name="tbDescription_Deaths" Grid.Column="0" Grid.Row="1" Text="Deaths" />
-            <TextBlock x:Name="tbDescription_WeekIncidence" Grid.Column="0" Grid.Row="2" Text="WeekIncidence" />
+            <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <TextBlock x:Name="tbValue_Name" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Text="{Binding DistrictData.Name}" />
-            <TextBlock x:Name="tbValue_Deaths" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding DistrictData.Deaths}" />
-            <TextBlock x:Name="tbValue_WeekIncidence" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding DistrictData.WeekIncidence, StringFormat=N1}" />
+                <TextBlock x:Name="tbDescription_Name" Grid.Column="0" Grid.Row="0" Text="Name" />
+                <TextBlock x:Name="tbDescription_Deaths" Grid.Column="0" Grid.Row="1" Text="Deaths" />
+                <TextBlock x:Name="tbDescription_WeekIncidence" Grid.Column="0" Grid.Row="2" Text="WeekIncidence" />
 
+                <TextBlock x:Name="tbValue_Name" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Text="{Binding DistrictData.Name}" />
+                <TextBlock x:Name="tbValue_Deaths" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Text="{Binding DistrictData.Deaths}" />
+                <TextBlock x:Name="tbValue_WeekIncidence" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Text="{Binding DistrictData.WeekIncidence, StringFormat=N1}" />
+
+                <TextBlock Grid.Column="3" Grid.Row="0" Text="Trend" />
+                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Trend}" />
+                <TextBlock Grid.Column="3" Grid.Row="1" Text="Trend (7 day)" />
+                <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding WeekTrend}" />
+            </Grid>
+          
             <TextBlock Text="Week incidence" Grid.Column="0" Grid.Row="4"  />
             <Controls1:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" 
                                       DiagramLevelItemsSource="{Binding CountyResults}" 
@@ -81,7 +102,7 @@
             <Slider Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="12" 
                     x:Name="slider2" 
                     Minimum="1" 
-                    Maximum="10" 
+                    Maximum="500" 
                     Value="1" 
                     HorizontalAlignment="Stretch" />
 

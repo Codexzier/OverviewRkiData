@@ -45,6 +45,9 @@ namespace OverviewRkiData.Views.County
 
 
         private ICommand _commandCreatePicture;
+        private string _trend;
+        private string _weekTrend;
+
         public ICommand CommandCreatePicture
         {
             get => this._commandCreatePicture;
@@ -52,6 +55,26 @@ namespace OverviewRkiData.Views.County
             {
                 this._commandCreatePicture = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandCreatePicture));
+            }
+        }
+
+        public string Trend
+        {
+            get => this._trend;
+            set
+            {
+                this._trend = value;
+                this.OnNotifyPropertyChanged(nameof(this.Trend));
+            }
+        }
+
+        public string WeekTrend
+        {
+            get => this._weekTrend;
+            set
+            {
+                this._weekTrend = value;
+                this.OnNotifyPropertyChanged(nameof(this.WeekTrend));
             }
         }
     }
