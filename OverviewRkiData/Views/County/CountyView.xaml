@@ -80,6 +80,7 @@
             <Controls1:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" 
                                       DiagramLevelItemsSource="{Binding CountyResults}" 
                                       VerticalAlignment="Stretch"
+                                      BarsFromRightToLeft="True"
                                       Scale="{Binding Path=Value, ElementName=slider1}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="7" 
@@ -95,6 +96,7 @@
             <Controls1:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 
                                       DiagramLevelItemsSource="{Binding CountyDeathResults}" 
                                       VerticalAlignment="Stretch"
+                                      BarsFromRightToLeft="True"
                                       Scale="{Binding Path=Value, ElementName=slider2}" />
 
             <TextBlock Grid.Column="0" Grid.Row="12" 

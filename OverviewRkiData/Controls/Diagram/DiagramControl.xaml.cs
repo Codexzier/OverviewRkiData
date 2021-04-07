@@ -1,6 +1,5 @@
 ﻿using OverviewRkiData.Components.Ui.Anims;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -8,6 +7,16 @@ namespace OverviewRkiData.Controls.Diagram
 {
     public partial class DiagramControl 
     {
+
+        public static readonly DependencyProperty BarsFromRightToLeftProperty = DependencyProperty.Register(
+            "BarsFromRightToLeft", typeof(bool), typeof(DiagramControl), new PropertyMetadata(default(bool)));
+
+        public bool BarsFromRightToLeft
+        {
+            get => (bool) this.GetValue(BarsFromRightToLeftProperty);
+            set => this.SetValue(BarsFromRightToLeftProperty, value);
+        }
+
         public double Scale
         {
             get => (double)this.GetValue(ScaleProperty);
@@ -52,6 +61,7 @@ namespace OverviewRkiData.Controls.Diagram
         }
 
         // TODO: Not sure, but I have an idea.
+        // TODO: forgotten
         private readonly IList<BarItem> _barItems = new List<BarItem>();
         private int _hashValue = -1;
 
@@ -69,6 +79,9 @@ namespace OverviewRkiData.Controls.Diagram
                 control.RenderSize = new Size(control.Width, control.Height);
             }
 
+            control.SimpleDiagram.FlowDirection =
+                control.BarsFromRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+
             control._barItems.Clear();
             control.SimpleDiagram.Children.Clear();
 
@@ -78,9 +91,7 @@ namespace OverviewRkiData.Controls.Diagram
             control.OneHundredText.Margin = new Thickness(0, 0, 0, 100 / control.Scale * heightScale);
 
             var widthPerResult = (control.ActualWidth - 20) / control.DiagramLevelItemsSource.Count;
-
-          
-
+            
             var delay = 1;
             foreach (var item in control.DiagramLevelItemsSource)
             {
