@@ -38,12 +38,11 @@
                      KeyUp="TextBoxSearch_KeyUp"/>
 
             <DataGrid Grid.Row="2" 
-                      Grid.RowSpan="2"
                       RenderOptions.CachingHint="Cache"
                       ItemsSource="{Binding Districts}" 
                       VerticalScrollBarVisibility="Visible"
                       SelectedItem="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" 
-                      Margin="0,1,0,26">
+                      Margin="0">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="" Binding="{Binding Selected}" Visibility="Collapsed" />
                     <DataGridTextColumn Header="County" Binding="{Binding Name}" />

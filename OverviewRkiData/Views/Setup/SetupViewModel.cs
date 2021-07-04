@@ -3,12 +3,16 @@ using System.Windows.Input;
 
 namespace OverviewRkiData.Views.Setup
 {
-    internal class SetupViewModel : BaseViewModel
+    public class SetupViewModel : BaseViewModel
     {
         private bool _loadRkiDataByApplicationStart;
         private ICommand _commandLoadRkiDataByApplicationStart;
         private ICommand _commandImportDataFromLegacyApplication;
         private ICommand _commandLoadRkiData;
+        private bool _diagramAnimationRightToLeft;
+        private ICommand _commandDiagramAnimationRightToLeft;
+        private bool _diagramAnimationOn;
+        private ICommand _commandDiagramAnimationOn;
 
         public bool LoadRkiDataByApplicationStart
         {
@@ -47,6 +51,46 @@ namespace OverviewRkiData.Views.Setup
             {
                 this._commandLoadRkiData = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandLoadRkiData));
+            }
+        }
+
+        public bool DiagramAnimationRightToLeft
+        {
+            get => this._diagramAnimationRightToLeft;
+            set
+            {
+                this._diagramAnimationRightToLeft = value;
+                this.OnNotifyPropertyChanged(nameof(this.DiagramAnimationRightToLeft));
+            }
+        }
+
+        public ICommand CommandDiagramAnimationRightToLeft
+        {
+            get => this._commandDiagramAnimationRightToLeft;
+            set
+            {
+                this._commandDiagramAnimationRightToLeft = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandDiagramAnimationRightToLeft));
+            }
+        }
+
+        public bool DiagramAnimationOn
+        {
+            get => this._diagramAnimationOn;
+            set
+            {
+                this._diagramAnimationOn = value;
+                this.OnNotifyPropertyChanged(nameof(this.DiagramAnimationOn));
+            }
+        }
+
+        public ICommand CommandDiagramAnimationOn
+        {
+            get => this._commandDiagramAnimationOn;
+            set
+            {
+                this._commandDiagramAnimationOn = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandDiagramAnimationOn));
             }
         }
     }

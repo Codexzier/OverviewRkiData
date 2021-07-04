@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.County
 {
@@ -35,6 +36,11 @@ namespace OverviewRkiData.Views.County
 
         private void InitializeAnimation()
         {
+            var setting = UserSettingsLoader.GetInstance().Load();
+            this._viewModel.ShowAnimationOn = setting.DiagramAnimationOn;
+            this._viewModel.ShowBarsFromRightToLeft = setting.DiagramAnimationRightToLeft;
+
+
             this._fadeOut.Add((this.tbDescription_Name, new Storyboard()));
             this._fadeOut.Add((this.tbValue_Name, new Storyboard()));
 

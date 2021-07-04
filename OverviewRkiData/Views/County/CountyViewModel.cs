@@ -47,6 +47,8 @@ namespace OverviewRkiData.Views.County
         private ICommand _commandCreatePicture;
         private string _trend;
         private string _weekTrend;
+        private bool _showBarsFromRightToLeft;
+        private bool _showAnimationOn;
 
         public ICommand CommandCreatePicture
         {
@@ -75,6 +77,26 @@ namespace OverviewRkiData.Views.County
             {
                 this._weekTrend = value;
                 this.OnNotifyPropertyChanged(nameof(this.WeekTrend));
+            }
+        }
+
+        public bool ShowBarsFromRightToLeft
+        {
+            get => this._showBarsFromRightToLeft;
+            set
+            {
+                this._showBarsFromRightToLeft = value;
+                this.OnNotifyPropertyChanged(nameof(this.ShowBarsFromRightToLeft));
+            }
+        }
+
+        public bool ShowAnimationOn
+        {
+            get => this._showAnimationOn;
+            set
+            {
+                this._showAnimationOn = value;
+                this.OnNotifyPropertyChanged(nameof(this.ShowAnimationOn));
             }
         }
     }

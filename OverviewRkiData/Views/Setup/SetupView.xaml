@@ -28,6 +28,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
 
                 <RowDefinition Height="10" />
                 <RowDefinition Height="Auto" />
@@ -57,6 +59,16 @@
                 HorizontalAlignment="Left"
                 Content="Lade Daten" 
                 Command="{Binding CommandLoadRkiData}"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                       TextWrapping="Wrap"
+                       Text="Diagramm animation an" />
+            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding DiagramAnimationOn}" Command="{Binding CommandDiagramAnimationOn}" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       TextWrapping="Wrap"
+                       Text="Diagramm rechts nach links animieren" />
+            <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding DiagramAnimationRightToLeft}" Command="{Binding CommandDiagramAnimationRightToLeft}" />
         </Grid>
     </Border>
 </UserControl>

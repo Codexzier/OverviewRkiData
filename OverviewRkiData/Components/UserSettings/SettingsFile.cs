@@ -13,6 +13,8 @@ namespace OverviewRkiData.Components.UserSettings
         private string _lastImportFilename;
         private bool _loadFromService;
         private bool _loadRkiDataByApplicationStart;
+        private bool _diagramAnimationRightToLeft;
+        private bool _diagramAnimationOn;
 
         public SettingsFile(bool hasChanged) => this.HasChanged = hasChanged;
 
@@ -102,6 +104,26 @@ namespace OverviewRkiData.Components.UserSettings
             set
             {
                 this._loadRkiDataByApplicationStart = value;
+                this.SetChanged();
+            }
+        }
+
+        public bool DiagramAnimationRightToLeft
+        {
+            get => this._diagramAnimationRightToLeft;
+            set
+            {
+                this._diagramAnimationRightToLeft = value;
+                this.SetChanged();
+            }
+        }
+
+        public bool DiagramAnimationOn
+        {
+            get => this._diagramAnimationOn;
+            set
+            {
+                this._diagramAnimationOn = value;
                 this.SetChanged();
             }
         }
