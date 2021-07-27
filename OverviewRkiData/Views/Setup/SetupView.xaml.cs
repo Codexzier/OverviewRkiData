@@ -6,7 +6,7 @@ namespace OverviewRkiData.Views.Setup
     /// <summary>
     /// Interaction logic for SetupView.xaml
     /// </summary>
-    public partial class SetupView : UserControl
+    public partial class SetupView
     {
         private readonly SetupViewModel _viewModel;
         public SetupView()
@@ -21,6 +21,7 @@ namespace OverviewRkiData.Views.Setup
 
             this._viewModel.CommandDiagramAnimationOn = new CheckBoxCommandDiagramAnimationOn(this._viewModel);
             this._viewModel.CommandDiagramAnimationRightToLeft = new CheckBoxCommandDiagramAnimationRightToLeft(this._viewModel);
+            this._viewModel.CommandFillMissingDataWithDummyValues = new CheckBoxCommandFillMissingDataWithDummyValues(this._viewModel);
         }
 
         public override void OnApplyTemplate()
@@ -29,6 +30,7 @@ namespace OverviewRkiData.Views.Setup
             this._viewModel.LoadRkiDataByApplicationStart = setting.LoadRkiDataByApplicationStart;
             this._viewModel.DiagramAnimationOn = setting.DiagramAnimationOn;
             this._viewModel.DiagramAnimationRightToLeft = setting.DiagramAnimationRightToLeft;
+            this._viewModel.FillMissingDataWithDummyValues = setting.FillMissingDataWithDummyValues;
         }
                
     }

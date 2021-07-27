@@ -69,6 +69,12 @@
                        TextWrapping="Wrap"
                        Text="Diagramm rechts nach links animieren" />
             <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding DiagramAnimationRightToLeft}" Command="{Binding CommandDiagramAnimationRightToLeft}" />
+            
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                       TextWrapping="Wrap" 
+                       Text="Fehlende Tage durch Dummy Werte ausfüllen"/>
+            <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding FillMissingDataWithDummyValues}" Command="{Binding CommandFillMissingDataWithDummyValues}" />
+            
         </Grid>
     </Border>
 </UserControl>

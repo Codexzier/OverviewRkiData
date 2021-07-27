@@ -15,6 +15,7 @@ namespace OverviewRkiData.Components.UserSettings
         private bool _loadRkiDataByApplicationStart;
         private bool _diagramAnimationRightToLeft;
         private bool _diagramAnimationOn;
+        private bool _fillMissingDataWithDummyValues;
 
         public SettingsFile(bool hasChanged) => this.HasChanged = hasChanged;
 
@@ -124,6 +125,16 @@ namespace OverviewRkiData.Components.UserSettings
             set
             {
                 this._diagramAnimationOn = value;
+                this.SetChanged();
+            }
+        }
+
+        public bool FillMissingDataWithDummyValues
+        {
+            get => this._fillMissingDataWithDummyValues;
+            set
+            {
+                this._fillMissingDataWithDummyValues = value;
                 this.SetChanged();
             }
         }

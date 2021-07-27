@@ -13,6 +13,8 @@ namespace OverviewRkiData.Views.Setup
         private ICommand _commandDiagramAnimationRightToLeft;
         private bool _diagramAnimationOn;
         private ICommand _commandDiagramAnimationOn;
+        private bool _fillMissingDataWithDummyValues;
+        private ICommand _commandFillMissingDataWithDummyValues;
 
         public bool LoadRkiDataByApplicationStart
         {
@@ -91,6 +93,26 @@ namespace OverviewRkiData.Views.Setup
             {
                 this._commandDiagramAnimationOn = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandDiagramAnimationOn));
+            }
+        }
+
+        public bool FillMissingDataWithDummyValues
+        {
+            get => this._fillMissingDataWithDummyValues;
+            set
+            {
+                this._fillMissingDataWithDummyValues = value;
+                this.OnNotifyPropertyChanged(nameof(this.FillMissingDataWithDummyValues));
+            }
+        }
+
+        public ICommand CommandFillMissingDataWithDummyValues
+        {
+            get => this._commandFillMissingDataWithDummyValues;
+            set
+            {
+                this._commandFillMissingDataWithDummyValues = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandFillMissingDataWithDummyValues));
             }
         }
     }
