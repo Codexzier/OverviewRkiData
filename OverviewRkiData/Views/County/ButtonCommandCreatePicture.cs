@@ -1,13 +1,12 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using OverviewRkiData.Components.WpfRender;
-using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.RenderPicture;
+using System;
+using System.Windows;
 
 namespace OverviewRkiData.Views.County
 {
-    public class ButtonCommandCreatePicture : ICommand
+    public class ButtonCommandCreatePicture : BaseCommand
     {
         private readonly CountyViewModel _viewModel;
         private readonly RenderPicturePrint _renderPicturePrint;
@@ -18,9 +17,7 @@ namespace OverviewRkiData.Views.County
             this._renderPicturePrint = renderPicturePrint;
         }
 
-        public bool CanExecute(object parameter) => true;
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             var filename = $"{Environment.CurrentDirectory}/rki-status-{this._viewModel.DistrictData.Date:dd-MM-yyyy}.jpg";
             
@@ -31,7 +28,5 @@ namespace OverviewRkiData.Views.County
 
             this._renderPicturePrint.Visibility = Visibility.Hidden;
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

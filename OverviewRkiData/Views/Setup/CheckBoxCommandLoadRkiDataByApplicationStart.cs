@@ -1,21 +1,19 @@
-﻿using OverviewRkiData.Components.UserSettings;
-using System;
-using System.Windows.Input;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Components;
+using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.Setup
 {
-    internal class CheckBoxCommandLoadRkiDataByApplicationStart : ICommand
+    internal class CheckBoxCommandLoadRkiDataByApplicationStart : BaseCommand
     {
         private readonly SetupViewModel _viewModel;
 
         public CheckBoxCommandLoadRkiDataByApplicationStart(SetupViewModel viewModel) => this._viewModel = viewModel;
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) => true;
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
-            var userSettings = UserSettingsLoader.GetInstance();
+            var userSettings = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize);
             var setting = userSettings.Load();
 
             setting.LoadRkiDataByApplicationStart = this._viewModel.LoadRkiDataByApplicationStart;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
 
 namespace OverviewRkiData.Components.RkiCoronaLandkreise
 {
@@ -24,7 +25,7 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
             saveIf = null;
             var filename = HelperExtension.CreateFilename();
 
-            if (!UserSettingsLoader.GetInstance().Load().LoadRkiDataByApplicationStart &&
+            if (!UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load().LoadRkiDataByApplicationStart &&
                 !loadForceFromInternet)
             {
                 filename = GetLastLoadedData();

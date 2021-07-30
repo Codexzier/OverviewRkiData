@@ -1,16 +1,18 @@
-﻿using System;
-using OverviewRkiData.Commands;
-using OverviewRkiData.Components.Data;
-using OverviewRkiData.Components.Ui.Anims;
-using OverviewRkiData.Components.Ui.EventBus;
+﻿using OverviewRkiData.Components.Data;
 using OverviewRkiData.Controls.Diagram;
 using OverviewRkiData.Views.Data;
 using OverviewRkiData.Views.RenderPicture;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.Anims;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using OverviewRkiData.Components;
 using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.County
@@ -36,7 +38,7 @@ namespace OverviewRkiData.Views.County
 
         private void InitializeAnimation()
         {
-            var setting = UserSettingsLoader.GetInstance().Load();
+            var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
             this._viewModel.ShowAnimationOn = setting.DiagramAnimationOn;
             this._viewModel.ShowBarsFromRightToLeft = setting.DiagramAnimationRightToLeft;
 
@@ -85,7 +87,7 @@ namespace OverviewRkiData.Views.County
                 }
 
                 this._viewModel.DistrictData = districtItem;
-                var setting = UserSettingsLoader.GetInstance().Load();
+                var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
 
                 await Task.Run(() =>
                 {

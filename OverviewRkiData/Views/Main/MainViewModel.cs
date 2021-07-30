@@ -1,6 +1,6 @@
-﻿using System;
-using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using OverviewRkiData.Views.Data;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

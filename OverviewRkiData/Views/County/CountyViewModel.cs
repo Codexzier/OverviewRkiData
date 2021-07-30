@@ -1,5 +1,5 @@
-﻿using OverviewRkiData.Controls.Diagram;
-using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Controls.Diagram;
 using OverviewRkiData.Views.Data;
 using System.Collections.Generic;
 using System.Windows.Input;

@@ -1,6 +1,7 @@
-﻿using OverviewRkiData.Commands;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
 using OverviewRkiData.Components.LegacyData;
-using OverviewRkiData.Components.Ui.EventBus;
 using OverviewRkiData.Components.UserSettings;
 using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Main;
@@ -10,13 +11,14 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
+using OverviewRkiData.Components;
 
 namespace OverviewRkiData
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -26,7 +28,7 @@ namespace OverviewRkiData
             
             this.Prepare();
 
-            var setting = UserSettingsLoader.GetInstance().Load();
+            var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
 
             this.LoadApplicationSize(setting);
             this.LoadApplicationWindowState(setting);
@@ -55,7 +57,7 @@ namespace OverviewRkiData
         /// <summary>
         /// Load the last size of the application
         /// </summary>
-        private void LoadApplicationSize(SettingsFile setting)
+        private void LoadApplicationSize(CustomSettingsFile setting)
         {
             var size = new System.Drawing.Size(setting.SizeX, setting.SizeY);
 
@@ -76,7 +78,7 @@ namespace OverviewRkiData
         /// <summary>
         /// Load the window state
         /// </summary>
-        private void LoadApplicationWindowState(SettingsFile setting)
+        private void LoadApplicationWindowState(CustomSettingsFile setting)
         {
             if (string.IsNullOrEmpty(setting.ApplicationWindowState))
             {
@@ -92,7 +94,7 @@ namespace OverviewRkiData
         /// <summary>
         /// Load the location and place the application to the position.
         /// </summary>
-        private void LoadApplicationStartLocation(SettingsFile setting)
+        private void LoadApplicationStartLocation(CustomSettingsFile setting)
         {
             var point = new System.Drawing.Point(setting.ApplicationPositionX, setting.ApplicationPositionY);
 
@@ -108,7 +110,8 @@ namespace OverviewRkiData
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var usl = UserSettingsLoader.GetInstance();
+            var usl = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize,
+                SerializeHelper.Deserialize);
 
             var file = usl.Load();
 
@@ -121,7 +124,7 @@ namespace OverviewRkiData
             usl.Save(file);
         }
 
-        private void Grid_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }

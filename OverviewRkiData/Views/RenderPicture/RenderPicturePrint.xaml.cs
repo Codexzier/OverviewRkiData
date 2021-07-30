@@ -1,15 +1,14 @@
-﻿using OverviewRkiData.Controls.Diagram;
-using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Controls.Diagram;
 using OverviewRkiData.Views.Data;
 using System.Collections.Generic;
-using System.Windows.Controls;
 
 namespace OverviewRkiData.Views.RenderPicture
 {
     /// <summary>
     /// Interaction logic for RenderPicturePrint.xaml
     /// </summary>
-    public partial class RenderPicturePrint : UserControl
+    public partial class RenderPicturePrint 
     {
         private readonly RenderPicturePrintViewModel _viewModel;
 

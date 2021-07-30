@@ -1,22 +1,20 @@
-﻿using OverviewRkiData.Commands;
-using OverviewRkiData.Components.Ui.EventBus;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using OverviewRkiData.Views.Dialog;
-using System;
-using System.Windows.Input;
 
 namespace OverviewRkiData.Views.Setup
 {
-    internal class ButtonCommandImportDataFromLegacyApplication : ICommand
+    internal class ButtonCommandImportDataFromLegacyApplication : BaseCommand
     {
         private readonly SetupViewModel _viewModel;
+        public ButtonCommandImportDataFromLegacyApplication(SetupViewModel viewModel)
+        {
+            this._viewModel = viewModel;
+        }
 
-        public ButtonCommandImportDataFromLegacyApplication(SetupViewModel viewModel) => this._viewModel = viewModel;
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) => true;
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             if (EventBusManager.IsViewOpen<DialogView>(10))
             {

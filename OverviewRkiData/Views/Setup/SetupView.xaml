@@ -12,12 +12,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
                 <Setter Property="Margin" Value="10 5" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border  BorderBrush="{StaticResource BrushMonochromatischGreen_E}" BorderThickness="1">
+    <Border  BorderBrush="{StaticResource BrushMonochromaticBlueGrayE}" BorderThickness="1">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MaxWidth="400" />

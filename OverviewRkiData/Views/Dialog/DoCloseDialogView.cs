@@ -1,17 +1,12 @@
-﻿using System;
-using System.Windows.Input;
-using OverviewRkiData.Components.Ui.EventBus;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using OverviewRkiData.Views.DialogContent;
 
 namespace OverviewRkiData.Views.Dialog
 {
-    internal class DoCloseDialogView : ICommand
+    internal class DoCloseDialogView : BaseCommand
     {
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) => true;
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             EventBusManager.CloseView<DialogContentView>(2);
             EventBusManager.CloseView<DialogView>(10);

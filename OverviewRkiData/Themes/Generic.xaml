@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:eventbus="clr-namespace:OverviewRkiData.Components.Ui.EventBus">
+    xmlns:eventbus="clr-namespace:Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;assembly=Codexzier.Wpf.ApplicationFramework">
 
     <Style TargetType="{x:Type eventbus:SideHostControl}">
         <Setter Property="Template">

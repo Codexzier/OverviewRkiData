@@ -3,7 +3,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OverviewRkiData.Views.Dialog"
-             xmlns:Eventbus="clr-namespace:OverviewRkiData.Components.Ui.EventBus" x:Class="OverviewRkiData.Views.Dialog.DialogView"
+             x:Class="OverviewRkiData.Views.Dialog.DialogView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
@@ -14,7 +14,7 @@
         <Grid Opacity=".4" 
               Background="{StaticResource BrushBlack}" />
         <Grid Margin="100 40" 
-              Background="{StaticResource BrushMonochromatischGreen_D}">
+              Background="{StaticResource BrushMonochromaticBlueGrayD}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -24,8 +24,8 @@
             <TextBlock Text="{Binding Header}" 
                        Padding="5"
                        Margin="1"
-                       Background="{StaticResource BrushMonochromatischGreen_A}"
-                       Foreground="{StaticResource BrushMonochromatischGreen_C}" />
+                       Background="{StaticResource BrushMonochromaticBlueGrayA}"
+                       Foreground="{StaticResource BrushMonochromaticBlueGrayC}" />
 
             <FolderBrowser:FolderBrowserControl Grid.Row="1" 
                                                 SelectedDirectory="{Binding SelectedDirectoryPath}" />

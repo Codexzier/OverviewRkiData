@@ -7,16 +7,16 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/DefaultSetup.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/Buttons.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/Icons.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/DataGrid.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/DefaultSetup.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Buttons.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Icons.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/DataGrid.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/TextBoxes.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Checkboxes.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/TextBlocks.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/ProgressBar.xaml" />
+
                 <ResourceDictionary Source="/OverviewRkiData;component/Converters/Converters.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/TextBoxes.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/Checkboxes.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/TextBlocks.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/ProgressBar.xaml" />
-                <ResourceDictionary Source="/OverviewRkiData;component/Styles/ToolTip.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="PasswordBox">
@@ -26,8 +26,6 @@
             <Style TargetType="RichTextBox">
                 <Setter Property="Margin" Value="5 2" />
             </Style>
-
-            
         </ResourceDictionary>
         
     </Application.Resources>

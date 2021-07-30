@@ -1,10 +1,9 @@
-﻿using OverviewRkiData.Commands;
-using OverviewRkiData.Components.Ui.EventBus;
-using System.Windows.Controls;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 
 namespace OverviewRkiData.Views.Menu
 {
-    public partial class MenuView : UserControl
+    public partial class MenuView
     {
         private readonly MenuViewModel _viewModel;
 
@@ -18,7 +17,7 @@ namespace OverviewRkiData.Views.Menu
             this._viewModel.CommandOpenSetup = new ButtonCommandOpenSetup(this._viewModel);
 
             EventBusManager.Register<MenuView, BaseMessage>(this.BaseMessageEvent);
-            this._viewModel.ViewOpened = EventBusManager.GetViewOpened(0);
+            //this._viewModel.ViewOpened = EventBusManager.GetViewOpened(0);
         }
 
         private void BaseMessageEvent(IMessageContainer arg)

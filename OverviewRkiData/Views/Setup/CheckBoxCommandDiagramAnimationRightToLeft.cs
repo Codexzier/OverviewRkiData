@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Windows.Input;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Components;
 using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.Setup
 {
-    public class CheckBoxCommandDiagramAnimationRightToLeft : ICommand
+    public class CheckBoxCommandDiagramAnimationRightToLeft : BaseCommand
     {
         private readonly SetupViewModel _viewModel;
 
         public CheckBoxCommandDiagramAnimationRightToLeft(SetupViewModel viewModel) => this._viewModel = viewModel;
-
-        public bool CanExecute(object parameter) => true;
-
-        public void Execute(object parameter)
+        
+        public override void Execute(object parameter)
         {
-            var userSettings = UserSettingsLoader.GetInstance();
+            var userSettings = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize);
             var setting = userSettings.Load();
 
             setting.DiagramAnimationRightToLeft = this._viewModel.DiagramAnimationRightToLeft;
 
             userSettings.Save(setting);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

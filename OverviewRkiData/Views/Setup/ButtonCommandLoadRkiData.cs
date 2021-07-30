@@ -1,20 +1,11 @@
-﻿using OverviewRkiData.Components.RkiCoronaLandkreise;
-using System;
-using System.Windows.Input;
-using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Components.RkiCoronaLandkreise;
 
 namespace OverviewRkiData.Views.Setup
 {
-    internal class ButtonCommandLoadRkiData : ICommand
+    internal class ButtonCommandLoadRkiData : BaseCommand
     {
-        private SetupViewModel _viewModel;
-
-        public ButtonCommandLoadRkiData(SetupViewModel viewModel) => this._viewModel = viewModel;
-
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) => true;
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             var component = RkiCoronaLandkreiseComponent.GetInstance();
             component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;

@@ -9,7 +9,7 @@
     <UserControl.DataContext>
         <local:MenuViewModel />
     </UserControl.DataContext>
-    <Grid Background="{StaticResource BrushMonochromatischGreen_D}">
+    <Grid Background="{StaticResource BrushMonochromaticBlueGrayD}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />

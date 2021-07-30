@@ -1,4 +1,4 @@
-﻿using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Windows.Input;
 
 namespace OverviewRkiData.Views.Setup

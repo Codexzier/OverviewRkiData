@@ -1,14 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using Newtonsoft.Json;
 
 namespace OverviewRkiData.Components.UserSettings
 {
-    public class SettingsFile
+    public class CustomSettingsFile : SettingsFile
     {
-        private int _sizeX;
-        private int _sizeY;
-        private string _applicationWindowState;
-        private int _applicationPositionX;
-        private int _applicationPositionY;
         private string _lastImportDirectory;
         private string _lastImportFilename;
         private bool _loadFromService;
@@ -16,62 +12,7 @@ namespace OverviewRkiData.Components.UserSettings
         private bool _diagramAnimationRightToLeft;
         private bool _diagramAnimationOn;
         private bool _fillMissingDataWithDummyValues;
-
-        public SettingsFile(bool hasChanged) => this.HasChanged = hasChanged;
-
-        [JsonIgnore]
-        public bool HasChanged { get; private set; }
-
-        private void SetChanged() => this.HasChanged = true;
-        internal void NoChanged() => this.HasChanged = false;
-
-        public int SizeX
-        {
-            get => this._sizeX; set
-            {
-                this._sizeX = value;
-                this.SetChanged();
-            }
-        }
-        public int SizeY
-        {
-            get => this._sizeY;
-            set
-            {
-                this._sizeY = value;
-                this.SetChanged();
-            }
-        }
-
-        public string ApplicationWindowState
-        {
-            get => this._applicationWindowState;
-            set
-            {
-                this._applicationWindowState = value;
-                this.SetChanged();
-            }
-        }
-
-        public int ApplicationPositionX
-        {
-            get => this._applicationPositionX;
-            set
-            {
-                this._applicationPositionX = value;
-                this.SetChanged();
-            }
-        }
-        public int ApplicationPositionY
-        {
-            get => this._applicationPositionY;
-            set
-            {
-                this._applicationPositionY = value;
-                this.SetChanged();
-            }
-        }
-
+        
         public string LastImportDirectory
         {
             get => this._lastImportDirectory; set

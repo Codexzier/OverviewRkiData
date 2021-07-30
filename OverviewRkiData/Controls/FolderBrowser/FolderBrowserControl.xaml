@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{StaticResource BrushMonochromatischGreen_E}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
                 <Setter Property="Margin" Value="10 5" />
             </Style>
         </ResourceDictionary>
@@ -31,7 +31,7 @@
         
         <ListBox Grid.Row="2" 
                  x:Name="ListBoxFolder" 
-                 Background="{StaticResource BrushMonochromatischGreen_D}"
+                 Background="{StaticResource BrushMonochromaticBlueGrayD}"
                  MouseDoubleClick="ListBoxFolder_MouseDoubleClick"
                  SelectionChanged="ListBoxFolder_SelectionChanged">
             <ListBox.ItemTemplate>

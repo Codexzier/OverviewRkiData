@@ -1,24 +1,23 @@
-﻿using OverviewRkiData.Components.Ui.EventBus;
-using OverviewRkiData.Views.Base;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using System.Windows.Input;
 
 namespace OverviewRkiData.Views.Menu
 {
     public class MenuViewModel : BaseViewModel
     {
-        private ViewOpen _viewOpened = ViewOpen.Nothing;
+        //private ViewOpen _viewOpened = ViewOpen.Nothing;
         private ICommand _commandOpenMain;
         private ICommand _commandOpenSetup;
 
-        public ViewOpen ViewOpened
-        {
-            get => this._viewOpened;
-            set
-            {
-                this._viewOpened = value;
-                this.OnNotifyPropertyChanged(nameof(this.ViewOpened));
-            }
-        }
+        //public ViewOpen ViewOpened
+        //{
+        //    get => this._viewOpened;
+        //    set
+        //    {
+        //        this._viewOpened = value;
+        //        this.OnNotifyPropertyChanged(nameof(this.ViewOpened));
+        //    }
+        //}
 
         public ICommand CommandOpenMain
         {

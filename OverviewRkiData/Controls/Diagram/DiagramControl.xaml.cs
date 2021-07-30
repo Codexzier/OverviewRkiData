@@ -1,7 +1,7 @@
-﻿using OverviewRkiData.Components.Ui.Anims;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Animation;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.Anims;
 
 namespace OverviewRkiData.Controls.Diagram
 {

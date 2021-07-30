@@ -1,5 +1,5 @@
-﻿using OverviewRkiData.Commands;
-using OverviewRkiData.Components.Ui.EventBus;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using System.Windows.Controls;
 
 namespace OverviewRkiData.Views.ActivityLoading

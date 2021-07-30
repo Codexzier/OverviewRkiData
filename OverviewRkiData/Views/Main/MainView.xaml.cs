@@ -1,17 +1,16 @@
-﻿using System;
-using OverviewRkiData.Commands;
+﻿using Codexzier.Wpf.ApplicationFramework.Commands;
+using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
 using OverviewRkiData.Components.RkiCoronaLandkreise;
-using OverviewRkiData.Components.Ui.EventBus;
 using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 
 namespace OverviewRkiData.Views.Main
 {
-    public partial class MainView : UserControl
+    public partial class MainView
     {
         private readonly MainViewModel _viewModel;
 

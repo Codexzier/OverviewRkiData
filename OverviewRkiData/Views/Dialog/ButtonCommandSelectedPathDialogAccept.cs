@@ -1,22 +1,17 @@
-﻿using System;
-using System.IO;
-using System.Windows.Input;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.Ui.EventBus;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
 using OverviewRkiData.Components.LegacyData;
-using OverviewRkiData.Components.Ui.EventBus;
-using OverviewRkiData.Views.Base;
+using System.IO;
 
 namespace OverviewRkiData.Views.Dialog
 {
-    internal class ButtonCommandSelectedPathDialogAccept : ICommand
+    internal class ButtonCommandSelectedPathDialogAccept : BaseCommand
     {
         private readonly DialogViewModel _viewModel;
 
         public ButtonCommandSelectedPathDialogAccept(DialogViewModel viewModel) => this._viewModel = viewModel;
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter) => true;
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             EventBusManager.CloseView<DialogView>(10);
             

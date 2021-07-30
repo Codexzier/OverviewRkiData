@@ -1,5 +1,6 @@
-﻿using OverviewRkiData.Components.UserSettings;
-using System.Windows.Controls;
+﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using OverviewRkiData.Components;
+using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.Setup
 {
@@ -17,7 +18,7 @@ namespace OverviewRkiData.Views.Setup
 
             this._viewModel.CommandLoadRkiDataByApplicationStart = new CheckBoxCommandLoadRkiDataByApplicationStart(this._viewModel);
             this._viewModel.CommandImportDataFromLegacyApplication = new ButtonCommandImportDataFromLegacyApplication(this._viewModel);
-            this._viewModel.CommandLoadRkiData = new ButtonCommandLoadRkiData(this._viewModel);
+            this._viewModel.CommandLoadRkiData = new ButtonCommandLoadRkiData();
 
             this._viewModel.CommandDiagramAnimationOn = new CheckBoxCommandDiagramAnimationOn(this._viewModel);
             this._viewModel.CommandDiagramAnimationRightToLeft = new CheckBoxCommandDiagramAnimationRightToLeft(this._viewModel);
@@ -26,7 +27,7 @@ namespace OverviewRkiData.Views.Setup
 
         public override void OnApplyTemplate()
         {
-            var setting = UserSettingsLoader.GetInstance().Load();
+            var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
             this._viewModel.LoadRkiDataByApplicationStart = setting.LoadRkiDataByApplicationStart;
             this._viewModel.DiagramAnimationOn = setting.DiagramAnimationOn;
             this._viewModel.DiagramAnimationRightToLeft = setting.DiagramAnimationRightToLeft;

@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using OverviewRkiData.Views.Base;
 
 namespace OverviewRkiData.Controls.FolderBrowser
 {
     /// <summary>
     /// Interaction logic for FolderBrowserControl.xaml
     /// </summary>
-    public partial class FolderBrowserControl : UserControl
+    public partial class FolderBrowserControl
     {
         public static readonly DependencyProperty SelectedDirectoryProperty = DependencyProperty.Register(
             "SelectedDirectory", typeof(SelectedDirectory), typeof(FolderBrowserControl), new PropertyMetadata(default(SelectedDirectory)));
@@ -38,7 +38,7 @@ namespace OverviewRkiData.Controls.FolderBrowser
                 {
                     list.Add(d);
                 }
-            };
+            }
 
             try
             {

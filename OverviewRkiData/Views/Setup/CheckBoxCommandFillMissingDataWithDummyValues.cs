@@ -1,10 +1,13 @@
 using System;
 using System.Windows.Input;
+using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
+using Codexzier.Wpf.ApplicationFramework.Views.Base;
+using OverviewRkiData.Components;
 using OverviewRkiData.Components.UserSettings;
 
 namespace OverviewRkiData.Views.Setup
 {
-    public class CheckBoxCommandFillMissingDataWithDummyValues : ICommand
+    public class CheckBoxCommandFillMissingDataWithDummyValues : BaseCommand
     {
         private readonly SetupViewModel _viewModel;
 
@@ -12,22 +15,15 @@ namespace OverviewRkiData.Views.Setup
         {
             this._viewModel = viewModel;
         }
-
-        public bool CanExecute(object parameter)
+        
+        public override void Execute(object parameter)
         {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            var userSettings = UserSettingsLoader.GetInstance();
+            var userSettings = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize);
             var setting = userSettings.Load();
 
             setting.FillMissingDataWithDummyValues = this._viewModel.FillMissingDataWithDummyValues;
 
             userSettings.Save(setting);
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }
