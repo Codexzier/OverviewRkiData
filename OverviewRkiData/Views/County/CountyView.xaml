@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OverviewRkiData.Views.County" 
-             xmlns:Controls1="clr-namespace:OverviewRkiData.Controls.Diagram"
+             xmlns:local="clr-namespace:OverviewRkiData.Views.County"
+             xmlns:diagram="clr-namespace:Codexzier.Wpf.ApplicationFramework.Controls.Diagram;assembly=Codexzier.Wpf.ApplicationFramework"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="400">
     <UserControl.DataContext>
@@ -77,7 +77,7 @@
             </Grid>
           
             <TextBlock Text="Week incidence" Grid.Column="0" Grid.Row="4"  />
-            <Controls1:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" 
+            <diagram:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" 
                                       DiagramLevelItemsSource="{Binding CountyResults}" 
                                       VerticalAlignment="Stretch"
                                       BarsFromRightToLeft="{Binding ShowBarsFromRightToLeft}"
@@ -94,12 +94,12 @@
                     HorizontalAlignment="Stretch" />
 
             <TextBlock Text="Deaths" Grid.Column="0" Grid.Row="9"  />
-            <Controls1:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 
-                                      DiagramLevelItemsSource="{Binding CountyDeathResults}" 
-                                      VerticalAlignment="Stretch"
-                                      BarsFromRightToLeft="{Binding ShowBarsFromRightToLeft}"
-                                      AnimationOn="{Binding ShowAnimationOn}"
-                                      Scale="{Binding Path=Value, ElementName=slider2}" />
+            <diagram:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 
+                                    DiagramLevelItemsSource="{Binding CountyDeathResults}" 
+                                    VerticalAlignment="Stretch"
+                                    BarsFromRightToLeft="{Binding ShowBarsFromRightToLeft}"
+                                    AnimationOn="{Binding ShowAnimationOn}"
+                                    Scale="{Binding Path=Value, ElementName=slider2}" />
 
             <TextBlock Grid.Column="0" Grid.Row="12" 
                        Text="{Binding Path=Value, ElementName=slider, StringFormat=N1}" />
