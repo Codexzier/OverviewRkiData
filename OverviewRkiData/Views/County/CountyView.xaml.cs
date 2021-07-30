@@ -85,10 +85,13 @@ namespace OverviewRkiData.Views.County
                 }
 
                 this._viewModel.DistrictData = districtItem;
+                var setting = UserSettingsLoader.GetInstance().Load();
 
                 await Task.Run(() =>
                 {
-                    var result = HelperExtension.GetCountyResults(districtItem.Name);
+                    var result = HelperExtension.GetCountyResults(
+                        districtItem.Name, 
+                        setting.FillMissingDataWithDummyValues);
 
                     var enumerable = result as Landkreis[] ?? result.ToArray();
 
@@ -101,7 +104,8 @@ namespace OverviewRkiData.Views.County
                         {
                             Value = s.WeekIncidence,
                             ToolTipText = toolTip,
-                            SetHighlightMark = s.Date.Day == 1 || s.Date.Day < lastDay
+                            SetHighlightMark = s.Date.Day == 1 || s.Date.Day < lastDay,
+                            SetColor = s.Name.Equals("Dummy") ? 2: 0
                         };
 
                         lastDay = s.Date.Day;

@@ -97,7 +97,19 @@ namespace OverviewRkiData.Controls.Diagram
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                var barItem = new BarItem(widthPerResult, heightValue, item.ToolTipText, item.Value, item.SetHighlightMark, control.AnimationOn);
+                if (heightValue < 1)
+                {
+                    heightValue = 100;
+                }
+
+                var barItem = new BarItem(
+                    widthPerResult, 
+                    heightValue, 
+                    item.ToolTipText, 
+                    item.Value, 
+                    item.SetHighlightMark,
+                    item.SetColor,
+                    control.AnimationOn);
                 
                 control.SimpleDiagram.Children.Add(barItem.Bar);
                 control._barItems.Add(barItem);

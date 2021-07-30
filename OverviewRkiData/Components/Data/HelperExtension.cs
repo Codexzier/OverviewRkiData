@@ -1,6 +1,7 @@
 ﻿using OverviewRkiData.Components.RkiCoronaLandkreise;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -37,8 +38,10 @@ namespace OverviewRkiData.Components.Data
             return date;
         }
 
-        internal static IEnumerable<Landkreis> GetCountyResults(string name)
+        internal static IEnumerable<Landkreis> GetCountyResults(string name, bool settingFillMissingDataWithDummyValues)
         {
+            var minDate = DateTime.MaxValue;
+            var maxDate = DateTime.MinValue;
             var list = new List<Landkreis>();
             foreach (var filename in GetFiles())
             {
@@ -58,10 +61,76 @@ namespace OverviewRkiData.Components.Data
                 }
 
                 v.Date = result.Date;
+
+                if (v.Date > maxDate)
+                {
+                    maxDate = v.Date;
+                }
+
+                if (v.Date < minDate)
+                {
+                    minDate = v.Date;
+                }
+                
                 list.Add(v);
             }
 
+            if (settingFillMissingDataWithDummyValues)
+            {
+                list = RenewListWithFillMissingDataWithDummyValues(list, minDate);
+            }
+
             return list.OrderBy(o => o.Date).ToList();
+        }
+
+        private static List<Landkreis> RenewListWithFillMissingDataWithDummyValues(List<Landkreis> list, DateTime minDate)
+        {
+            var renewsList = new List<Landkreis>();
+            list = list.OrderBy(o => o.Date).ToList();
+            var lastLandkreis = list.First();
+            foreach (var landkreis in list)
+            {
+                Debug.Print($"MinDate: {minDate:d}, landkreis.Date: {landkreis.Date}");
+                if (landkreis.Date == minDate)
+                {
+                    lastLandkreis = landkreis;
+                    renewsList.Add(landkreis);
+                    minDate = minDate.AddDays(1);
+                    continue;
+                }
+
+                if (landkreis.Date < minDate)
+                {
+                    // TODO: Tritt nur dann auf, wenn Daten doppelt vorhanden sind.
+                    // Also mit dem gleichen Datum
+                    continue;
+                }
+ 
+                var nextExistLandkreis = list.First(w => w.Date > minDate);
+
+                var days = (nextExistLandkreis.Date - minDate).Days;
+                var valueStepWeekIncidence = (nextExistLandkreis.WeekIncidence - lastLandkreis.WeekIncidence) / (days + 1);
+                for (var i = 0; i < days; i++)
+                {
+                    var dummy = new Landkreis
+                    {
+                        Cases = lastLandkreis.Cases, 
+                        Date = minDate, 
+                        Name = "Dummy", 
+                        Deaths = lastLandkreis.Deaths,
+                        WeekIncidence = lastLandkreis.WeekIncidence + valueStepWeekIncidence + valueStepWeekIncidence * i
+                    };
+                    minDate = minDate.AddDays(1);
+                    renewsList.Add(dummy);
+                    Debug.Print($"MinDate: {minDate:d}");
+                }
+                
+                lastLandkreis = landkreis;
+                renewsList.Add(landkreis);
+                minDate = minDate.AddDays(1);
+            }
+
+            return renewsList;
         }
 
         internal static string RemoveTimeFromLastUpdateString(this string lastUpdate) => lastUpdate.Split(',')[0];

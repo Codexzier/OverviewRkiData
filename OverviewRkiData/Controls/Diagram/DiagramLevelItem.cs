@@ -6,5 +6,6 @@
         public string ToolTipText { get; set; }
 
         public bool SetHighlightMark { get; set; }
+        public int SetColor { get; set; }
     }
 }
