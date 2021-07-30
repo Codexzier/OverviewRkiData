@@ -97,9 +97,9 @@ namespace OverviewRkiData.Controls.Diagram
             {
                 var heightValue = item.Value / control.Scale * heightScale;
 
-                if (heightValue < 1)
+                if (heightValue < 0)
                 {
-                    heightValue = 100;
+                    heightValue = 0;
                 }
 
                 var barItem = new BarItem(
