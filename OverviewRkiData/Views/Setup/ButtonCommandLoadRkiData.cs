@@ -10,7 +10,11 @@ namespace OverviewRkiData.Views.Setup
             var component = RkiCoronaLandkreiseComponent.GetInstance();
             component.RkiDataErrorEvent += this.Component_RkiDataErrorEvent;
             component.LoadData(out var saveIt);
-            saveIt(true);
+            if(saveIt != null)
+            {
+                saveIt(true);
+            }
+
             component.RkiDataErrorEvent -= this.Component_RkiDataErrorEvent;
         }
 
