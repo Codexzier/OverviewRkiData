@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controls\**" />
+    <EmbeddedResource Remove="Controls\**" />
+    <None Remove="Controls\**" />
+    <Page Remove="Controls\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Codexzier.Wpf.ApplicationFramework" Version="0.1.5" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.2" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.2" />
@@ -19,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Controls\" />
   </ItemGroup>
 
 </Project>

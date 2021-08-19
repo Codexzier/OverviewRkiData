@@ -34,8 +34,12 @@
                     ToolTip="Close application" 
                     Click="ButtonClose_Click" />
         </Grid>
-        
-        <menu:MenuView Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" />
+
+        <menu:MenuView Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" >
+            <menu:MenuView.Effect>
+                <DropShadowEffect BlurRadius="3" ShadowDepth="0.6" Opacity="0.5" Color="{StaticResource ColorMonochromaticBlueGrayC}" />
+            </menu:MenuView.Effect>
+        </menu:MenuView>
         <eventBus:SideHostControl Grid.Row="2"
                                   Grid.Column="0" 
                                   HorizontalAlignment="Stretch" 
