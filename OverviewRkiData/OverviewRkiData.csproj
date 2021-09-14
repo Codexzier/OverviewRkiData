@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
+    <AssemblyVersion>1.1</AssemblyVersion>
+    <FileVersion>1.1</FileVersion>
+    <NeutralLanguage>de</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>

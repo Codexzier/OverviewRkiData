@@ -7,6 +7,7 @@ using OverviewRkiData.Views.Base;
 using OverviewRkiData.Views.Main;
 using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -24,15 +25,15 @@ namespace OverviewRkiData
         {
             this.InitializeComponent();
 
-
-            
             this.Prepare();
 
             var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
 
             this.LoadApplicationSize(setting);
             this.LoadApplicationWindowState(setting);
-            this.LoadApplicationStartLocation(setting);            
+            this.LoadApplicationStartLocation(setting);
+
+            this.HeadTitleVersion.Text = $"v{Application.ResourceAssembly.GetName().Version}";
         }
 
         private void Prepare()

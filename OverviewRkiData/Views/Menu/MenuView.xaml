@@ -19,6 +19,8 @@
             <Button Content="Main" Command="{Binding CommandOpenMain}" />
 
             <Button Content="Setup" Command="{Binding CommandOpenSetup}" />
+
+            <Button Content="Neu Abrufen" Command="{Binding CommandUpdateDataFromRki}" />
         </StackPanel>
 
         <Grid Grid.Column="1">

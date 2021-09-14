@@ -5,19 +5,9 @@ namespace OverviewRkiData.Views.Menu
 {
     public class MenuViewModel : BaseViewModel
     {
-        //private ViewOpen _viewOpened = ViewOpen.Nothing;
         private ICommand _commandOpenMain;
         private ICommand _commandOpenSetup;
-
-        //public ViewOpen ViewOpened
-        //{
-        //    get => this._viewOpened;
-        //    set
-        //    {
-        //        this._viewOpened = value;
-        //        this.OnNotifyPropertyChanged(nameof(this.ViewOpened));
-        //    }
-        //}
+        private ICommand _commandUpdateDataFromRki;
 
         public ICommand CommandOpenMain
         {
@@ -36,6 +26,16 @@ namespace OverviewRkiData.Views.Menu
             {
                 this._commandOpenSetup = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandOpenSetup));
+            }
+        }
+
+        public ICommand CommandUpdateDataFromRki
+        {
+            get => this._commandUpdateDataFromRki;
+            set
+            {
+                this._commandUpdateDataFromRki = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandUpdateDataFromRki));
             }
         }
     }

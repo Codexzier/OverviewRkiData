@@ -37,8 +37,8 @@ namespace OverviewRkiData.Components.Database.MsSql
 
         public SqlDataReader ReadData(SqlConnection connection, string query)
         {
-            var commmand = new SqlCommand(query, connection);
-            return commmand.ExecuteReader();
+            var sqlCommand = new SqlCommand(query, connection);
+            return sqlCommand.ExecuteReader();
         }
 
         public int UpdateData(SqlConnection connection, string query)
@@ -56,8 +56,8 @@ namespace OverviewRkiData.Components.Database.MsSql
 
         public string[][] ReadDataFromQuery(SqlConnection connection, string query)
         {
-            var commmand = new SqlCommand(query, connection);
-            var reader = commmand.ExecuteReader();
+            var sqlCommand = new SqlCommand(query, connection);
+            var reader = sqlCommand.ExecuteReader();
 
             int columns = reader.GetColumnSchema().Count;
             var result = new List<string[]>();

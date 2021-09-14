@@ -15,6 +15,7 @@ namespace OverviewRkiData.Views.Menu
 
             this._viewModel.CommandOpenMain = new ButtonCommandOpenMain(this._viewModel);
             this._viewModel.CommandOpenSetup = new ButtonCommandOpenSetup(this._viewModel);
+            this._viewModel.CommandUpdateDataFromRki = new ButtonCommandUpdateDataFromRki();
 
             EventBusManager.Register<MenuView, BaseMessage>(this.BaseMessageEvent);
             //this._viewModel.ViewOpened = EventBusManager.GetViewOpened(0);
