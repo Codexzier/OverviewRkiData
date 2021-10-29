@@ -9,6 +9,14 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
     {
         public static void InsertGermanyIfNotList(this IList<Landkreis> landkreise, DateTime dt)
         {
+            if(landkreise == null)
+            {
+                landkreise = new List<Landkreis>();
+                CreateEmtpy(landkreise);
+                return;
+            }
+
+
             const string land = "Deutschland";
             
             if (landkreise.Any(a => a.Name.Equals(land)))
@@ -24,6 +32,19 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
                 Date = dt
             };
             
+            landkreise.Insert(0, landkreis);
+        }
+
+        private static void CreateEmtpy(IList<Landkreis> landkreise)
+        {
+            var landkreis = new Landkreis
+            {
+                Name = "Keine Daten",
+                Deaths = 0,
+                WeekIncidence = 0,
+                Date = DateTime.MinValue
+            };
+
             landkreise.Insert(0, landkreis);
         }
     }

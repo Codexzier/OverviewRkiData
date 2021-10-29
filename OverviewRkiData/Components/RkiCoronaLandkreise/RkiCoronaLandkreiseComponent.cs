@@ -134,6 +134,11 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
         
         private Landkreise ConvertToLandkreise(RkiCoronaLandkreiseResult result)
         {
+            if(result == null)
+            {
+                return new Landkreise();
+            }
+
             var lk = result.features.FirstOrDefault();
             if (lk == null)
             {

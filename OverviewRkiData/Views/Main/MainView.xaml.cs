@@ -78,6 +78,12 @@ namespace OverviewRkiData.Views.Main
                     return true;
                 }
 
+                if(landkreise.Districts == null)
+                {
+                    SimpleStatusOverlays.ActivityOff();
+                    return true;
+                }
+
                 // TODO aktuell wird nicht im jeden Datensatz das Datum hinterlegt.
                 var districtItems = landkreise.Districts.Select(s => new DistrictItem
                 {
