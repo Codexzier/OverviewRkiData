@@ -38,7 +38,9 @@ namespace OverviewRkiData.Components.Data
             return date;
         }
 
-        internal static IEnumerable<Landkreis> GetCountyResults(string name, bool settingFillMissingDataWithDummyValues)
+        internal static IEnumerable<Landkreis> GetCountyResults(
+            string name, 
+            bool settingFillMissingDataWithDummyValues)
         {
             var minDate = DateTime.MaxValue;
             var maxDate = DateTime.MinValue;

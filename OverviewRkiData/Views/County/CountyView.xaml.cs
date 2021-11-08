@@ -122,11 +122,23 @@ namespace OverviewRkiData.Views.County
                     var weekTrend = this.GetIncidenceTrendByWeek(enumerable, today);
                     this._viewModel.WeekTrend = $"{weekTrend:N1} ({this.TrendInOneWord(weekTrend)})";
 
-                    this._viewModel.CountyDeathResults = enumerable.Select(s =>
+                    if (setting.OnlyShowLast200Values)
                     {
-                        var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
-                        return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
-                    }).ToList();
+                        this._viewModel.CountyDeathResults = enumerable.Select(s =>
+                        {
+                            var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
+                            return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
+                        }).TakeLast(200).ToList();
+                    }
+                    else
+                    {
+                        this._viewModel.CountyDeathResults = enumerable.Select(s =>
+                        {
+                            var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
+                            return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
+                        }).ToList();
+                    }
+                    
 
                     // TODO Obsolete, wird nicht verwendet
                     this.Dispatcher.Invoke(delegate

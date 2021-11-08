@@ -99,5 +99,7 @@ namespace OverviewRkiData.Views.County
                 this.OnNotifyPropertyChanged(nameof(this.ShowAnimationOn));
             }
         }
+
+        public bool OnlyShowLast200Values { get; set; }
     }
 }

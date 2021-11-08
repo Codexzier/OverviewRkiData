@@ -12,7 +12,8 @@ namespace OverviewRkiData.Components.UserSettings
         private bool _diagramAnimationRightToLeft;
         private bool _diagramAnimationOn;
         private bool _fillMissingDataWithDummyValues;
-        
+        private bool _onlyShowLast200Values;
+
         public string LastImportDirectory
         {
             get => this._lastImportDirectory; set
@@ -76,6 +77,16 @@ namespace OverviewRkiData.Components.UserSettings
             set
             {
                 this._fillMissingDataWithDummyValues = value;
+                this.SetChanged();
+            }
+        }
+
+        public bool OnlyShowLast200Values
+        {
+            get => this._onlyShowLast200Values;
+            set
+            {
+                this._onlyShowLast200Values = value;
                 this.SetChanged();
             }
         }

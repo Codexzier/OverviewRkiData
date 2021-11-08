@@ -15,6 +15,8 @@ namespace OverviewRkiData.Views.Setup
         private ICommand _commandDiagramAnimationOn;
         private bool _fillMissingDataWithDummyValues;
         private ICommand _commandFillMissingDataWithDummyValues;
+        private bool _onlyShowLast200Values;
+        private ICommand _commandOnlyShowLast200Values;
 
         public bool LoadRkiDataByApplicationStart
         {
@@ -113,6 +115,26 @@ namespace OverviewRkiData.Views.Setup
             {
                 this._commandFillMissingDataWithDummyValues = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandFillMissingDataWithDummyValues));
+            }
+        }
+
+        public bool OnlyShowLast200Values
+        {
+            get => this._onlyShowLast200Values;
+            set
+            {
+                this._onlyShowLast200Values = value;
+                this.OnNotifyPropertyChanged(nameof(this.OnlyShowLast200Values));
+            }
+        }
+
+        public ICommand CommandOnlyShowLast200Values
+        {
+            get => this._commandOnlyShowLast200Values;
+            set
+            {
+                this._commandOnlyShowLast200Values = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandOnlyShowLast200Values));
             }
         }
     }

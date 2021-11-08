@@ -31,6 +31,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
 
                 <RowDefinition Height="10" />
                 <RowDefinition Height="Auto" />
@@ -75,6 +76,13 @@
                        TextWrapping="Wrap" 
                        Text="Fehlende Tage durch Dummy Werte ausfüllen"/>
             <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding FillMissingDataWithDummyValues}" Command="{Binding CommandFillMissingDataWithDummyValues}" />
+            
+            <TextBlock Grid.Row="6" Grid.Column="0"
+                       TextWrapping="Wrap"
+                       Text="Nur die letzten 100 Einträge zeigen"/>
+            <CheckBox Grid.Row="6" Grid.Column="1" 
+                      IsChecked="{Binding OnlyShowLast200Values}"
+                      Command="{Binding CommandOnlyShowLast200Values}"/>
             
         </Grid>
     </Border>
