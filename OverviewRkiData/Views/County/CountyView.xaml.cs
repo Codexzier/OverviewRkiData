@@ -98,23 +98,30 @@ namespace OverviewRkiData.Views.County
                     var enumerable = result as Landkreis[] ?? result.ToArray();
 
                     var lastDay = 1;
-                    this._viewModel.CountyResults = enumerable.Select(s =>
+                    var countyResults = enumerable.Select(s =>
+                     {
+                         var toolTip = $"{s.Date:d} | {s.WeekIncidence:N1} | {s.Deaths}";
+
+                         var temp = new DiagramLevelItem
+                         {
+                             Value = s.WeekIncidence,
+                             ToolTipText = toolTip,
+                             SetHighlightMark = s.Date.Day == 1 || s.Date.Day < lastDay,
+                             SetColor = s.Name.Equals("Dummy") ? 2 : 0
+                         };
+
+                         lastDay = s.Date.Day;
+
+                         return temp;
+                     });
+
+                    if (setting.OnlyShowLast200Values)
                     {
-                        var toolTip = $"{s.Date:d} | {s.WeekIncidence:N1} | {s.Deaths}";
+                        countyResults = countyResults.TakeLast(100);
+                    }
 
-                        var temp = new DiagramLevelItem
-                        {
-                            Value = s.WeekIncidence,
-                            ToolTipText = toolTip,
-                            SetHighlightMark = s.Date.Day == 1 || s.Date.Day < lastDay,
-                            SetColor = s.Name.Equals("Dummy") ? 2: 0
-                        };
 
-                        lastDay = s.Date.Day;
-
-                        return temp;
-                    }).ToList();
-
+                    this._viewModel.CountyResults = countyResults.ToList();
 
                     var today = DateTime.Today;
                     var oneDayTrend = this.GetIncidenceTrendByOneDay(enumerable, today);
@@ -122,23 +129,28 @@ namespace OverviewRkiData.Views.County
                     var weekTrend = this.GetIncidenceTrendByWeek(enumerable, today);
                     this._viewModel.WeekTrend = $"{weekTrend:N1} ({this.TrendInOneWord(weekTrend)})";
 
+                    var deathResult = enumerable.Select(s =>
+                    {
+                        var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
+                        return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
+                    });
+
                     if (setting.OnlyShowLast200Values)
                     {
-                        this._viewModel.CountyDeathResults = enumerable.Select(s =>
-                        {
-                            var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
-                            return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
-                        }).TakeLast(200).ToList();
+                        deathResult = deathResult.TakeLast(100);
                     }
-                    else
-                    {
-                        this._viewModel.CountyDeathResults = enumerable.Select(s =>
-                        {
-                            var toolTip = $"{s.Date:d} | {s.Deaths:N1} | {s.WeekIncidence:N1}";
-                            return new DiagramLevelItem { Value = s.Deaths, ToolTipText = toolTip };
-                        }).ToList();
-                    }
-                    
+
+                    // TODO: funktioinert nur, wenn vor to list ausgeführt wurde
+                    // Vielleicht funktioniert das direkt so verarbeitet wird?
+                    //var lastDeathRateValue = 0d;
+                    //foreach (var item in deathResult)
+                    //{
+                    //    var lastDayTemp = item.Value;
+                    //    item.Value -= lastDeathRateValue;
+                    //    lastDeathRateValue = lastDayTemp;
+                    //}
+
+                    this._viewModel.CountyDeathResults = deathResult.ToList();
 
                     // TODO Obsolete, wird nicht verwendet
                     this.Dispatcher.Invoke(delegate
