@@ -13,9 +13,10 @@ namespace OverviewRkiData.Views.Menu
 
             this._viewModel = (MenuViewModel)this.DataContext;
 
-            this._viewModel.CommandOpenMain = new ButtonCommandOpenMain(this._viewModel);
-            this._viewModel.CommandOpenSetup = new ButtonCommandOpenSetup(this._viewModel);
+            this._viewModel.CommandOpenMain = new ButtonCommandOpenMain();
+            this._viewModel.CommandOpenSetup = new ButtonCommandOpenSetup();
             this._viewModel.CommandUpdateDataFromRki = new ButtonCommandUpdateDataFromRki();
+            this._viewModel.CommandOpenLandkreise = new ButtonCommandOpenLandkreise();
 
             EventBusManager.Register<MenuView, BaseMessage>(this.BaseMessageEvent);
             //this._viewModel.ViewOpened = EventBusManager.GetViewOpened(0);

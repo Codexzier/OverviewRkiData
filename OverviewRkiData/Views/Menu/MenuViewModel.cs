@@ -8,6 +8,7 @@ namespace OverviewRkiData.Views.Menu
         private ICommand _commandOpenMain;
         private ICommand _commandOpenSetup;
         private ICommand _commandUpdateDataFromRki;
+        private ICommand _commandOpenLandkreise;
 
         public ICommand CommandOpenMain
         {
@@ -36,6 +37,16 @@ namespace OverviewRkiData.Views.Menu
             {
                 this._commandUpdateDataFromRki = value;
                 this.OnNotifyPropertyChanged(nameof(this.CommandUpdateDataFromRki));
+            }
+        }
+
+        public ICommand CommandOpenLandkreise
+        {
+            get => _commandOpenLandkreise;
+            set
+            {
+                _commandOpenLandkreise = value;
+                this.OnNotifyPropertyChanged(nameof(this.CommandOpenLandkreise));
             }
         }
     }
