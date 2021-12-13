@@ -40,11 +40,11 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <!--<RowDefinition Height="*" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="10" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />-->
             </Grid.RowDefinitions>
 
             <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3">
@@ -89,28 +89,34 @@
             <Slider Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" 
                     x:Name="slider1" 
                     Minimum="1" 
-                    Maximum="10" 
+                    Maximum="14" 
                     Value="1" 
                     HorizontalAlignment="Stretch" />
 
-            <TextBlock Text="Deaths" Grid.Column="0" Grid.Row="9"  />
-            <diagram:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 
+            <!--<TextBlock Text="Deaths" Grid.Column="0" Grid.Row="9" Visibility="Collapsed"  />-->
+            <!--<diagram:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 
                                     DiagramLevelItemsSource="{Binding CountyDeathResults}" 
                                     VerticalAlignment="Stretch"
                                     BarsFromRightToLeft="{Binding ShowBarsFromRightToLeft}"
                                     AnimationOn="{Binding ShowAnimationOn}"
-                                    Scale="{Binding Path=Value, ElementName=slider2}" />
+                                    Scale="{Binding Path=Value, ElementName=slider2}"
+                                    Visibility="Collapsed" />-->
 
-            <TextBlock Grid.Column="0" Grid.Row="12" 
-                       Text="{Binding Path=Value, ElementName=slider, StringFormat=N1}" />
+            <!--<TextBlock Grid.Column="0" Grid.Row="12" 
+                       Text="{Binding Path=Value, ElementName=slider, StringFormat=N1}"
+                       Visibility="Collapsed" />
             <Slider Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="12" 
                     x:Name="slider2" 
                     Minimum="1" 
                     Maximum="500" 
                     Value="1" 
-                    HorizontalAlignment="Stretch" />
+                    HorizontalAlignment="Stretch"
+                    Visibility="Collapsed" />
 
-            <Button Grid.Column="2" Grid.Row="13" Content="Create Picture" Command="{Binding CommandCreatePicture}" Visibility="Collapsed" />
+            <Button Grid.Column="2" Grid.Row="13" 
+                    Content="Create Picture" 
+                    Command="{Binding CommandCreatePicture}" 
+                    Visibility="Collapsed" />-->
         </Grid>
 
        
