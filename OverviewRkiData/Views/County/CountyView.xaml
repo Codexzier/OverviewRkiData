@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticBlueGrayE}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushMonochromaticSchemaE}" />
                 <Setter Property="Margin" Value="10 5" />
             </Style>
         </ResourceDictionary>
@@ -22,7 +22,7 @@
         <!-- TODO: This is a quick solution. -->
         <RenderPicture:RenderPicturePrint Visibility="Visible" Margin="0, 0, 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="RenderPicturePrint" />
 
-        <Grid Background="{StaticResource BrushMonochromaticBlueGrayD}">
+        <Grid Background="{StaticResource BrushMonochromaticSchemaD}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />

@@ -15,7 +15,7 @@
         <Grid Opacity=".4" 
               Background="{StaticResource BrushBlack}" />
         <Grid Margin="100 40" 
-              Background="{StaticResource BrushMonochromaticBlueGrayD}">
+              Background="{StaticResource BrushMonochromaticSchemaD}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -25,8 +25,8 @@
             <TextBlock Text="{Binding Header}" 
                        Padding="5"
                        Margin="1"
-                       Background="{StaticResource BrushMonochromaticBlueGrayA}"
-                       Foreground="{StaticResource BrushMonochromaticBlueGrayC}" />
+                       Background="{StaticResource BrushMonochromaticSchemaA}"
+                       Foreground="{StaticResource BrushMonochromaticSchemaC}" />
 
             <folderBrowser:FolderBrowserControl Grid.Row="1" 
                                                 SelectedDirectory="{Binding SelectedDirectoryPath}" />

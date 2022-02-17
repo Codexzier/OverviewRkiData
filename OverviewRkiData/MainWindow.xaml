@@ -13,7 +13,7 @@
         WindowStartupLocation="Manual" 
         Closing="Window_Closing" 
         WindowStyle="None">
-    <Grid Background="{StaticResource BrushMonochromaticBlueGrayD}">
+    <Grid Background="{StaticResource BrushMonochromaticSchemaD}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Column="0" 
               Grid.ColumnSpan="2" 
-              Background="{StaticResource BrushMonochromaticBlueGrayE}"
+              Background="{StaticResource BrushMonochromaticSchemaE}"
               MouseLeftButtonDown="Grid_MouseLeftButtonDown" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown">
             <TextBlock Text="Version: 1.0" FontSize="8" x:Name="HeadTitleVersion" Margin="10 0 0 0" />
             <Button HorizontalAlignment="Right"

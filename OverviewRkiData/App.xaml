@@ -7,6 +7,26 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
+                <!--<ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaBlueGray.xaml" />-->
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaWhiteGray.xaml" />
+                <!--<ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaGrayWhite.xaml" />-->
+                <!--<ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Colors.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+
+                    -->
+                <!-- Brush scheme: Monochromatic blue gray -->
+                <!--
+                    <SolidColorBrush x:Key="BrushMonochromaticSchemaA" Color="#FF195B01" />
+                    <SolidColorBrush x:Key="BrushMonochromaticSchemaB" Color="#FF2CA400" />
+                    <SolidColorBrush x:Key="BrushMonochromaticSchemaC" Color="#FFB8B8B8" />
+                    <SolidColorBrush x:Key="BrushMonochromaticSchemaD" Color="#FF0F3800" />
+                    <SolidColorBrush x:Key="BrushMonochromaticSchemaE" Color="#FF44FF00" />
+
+                </ResourceDictionary>-->
+                
                 <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/DefaultSetup.xaml" />
                 <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Icons.xaml" />

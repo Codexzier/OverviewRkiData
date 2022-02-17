@@ -93,5 +93,21 @@ namespace OverviewRkiData.Test.MsSql
             Assert.IsNotNull(resultId);
             Assert.AreEqual(3, resultId);
         }
+
+        [TestMethod]
+        public void TestData()
+        {
+            var dt = DateTime.Now;
+
+            var l = dt.ToFileTimeUtc();
+
+            Debug.Print($"{l}");
+
+            dt = DateTime.Parse("01.01.2008 00:00:00");
+
+            l = dt.ToFileTimeUtc();
+
+            Debug.Print($"{l}");
+        }
     }
 }
