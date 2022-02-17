@@ -8,17 +8,14 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
-                <!--<ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaBlueGray.xaml" />-->
-                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaWhiteGray.xaml" />
+                <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaBlueGray.xaml" />
+                <!--<ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaWhiteGray.xaml" />-->
                 <!--<ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/BrushesMonochromatischSchemaGrayWhite.xaml" />-->
                 <!--<ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="/Codexzier.Wpf.ApplicationFramework;component/Styles/Colors.xaml" />
                     </ResourceDictionary.MergedDictionaries>
-
-                    -->
-                <!-- Brush scheme: Monochromatic blue gray -->
-                <!--
+                
                     <SolidColorBrush x:Key="BrushMonochromaticSchemaA" Color="#FF195B01" />
                     <SolidColorBrush x:Key="BrushMonochromaticSchemaB" Color="#FF2CA400" />
                     <SolidColorBrush x:Key="BrushMonochromaticSchemaC" Color="#FFB8B8B8" />
