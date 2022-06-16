@@ -90,8 +90,9 @@
                     x:Name="slider1" 
                     Minimum="1" 
                     Maximum="14" 
-                    Value="1" 
-                    HorizontalAlignment="Stretch" />
+                    Value="{Binding ScaledDiagram}" 
+                    HorizontalAlignment="Stretch"
+                    ValueChanged="slider1_ValueChanged"/>
 
             <!--<TextBlock Text="Deaths" Grid.Column="0" Grid.Row="9" Visibility="Collapsed"  />-->
             <!--<diagram:DiagramControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" 

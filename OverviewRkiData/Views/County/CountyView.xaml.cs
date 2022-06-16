@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using Codexzier.Wpf.ApplicationFramework.Controls.Diagram;
+using System.Windows;
 
 namespace OverviewRkiData.Views.County
 {
@@ -41,6 +42,7 @@ namespace OverviewRkiData.Views.County
             var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
             this._viewModel.ShowAnimationOn = setting.DiagramAnimationOn;
             this._viewModel.ShowBarsFromRightToLeft = setting.DiagramAnimationRightToLeft;
+            this._viewModel.ScaledDiagram = setting.LastScaledDiagram;
 
 
             this._fadeOut.Add((this.tbDescription_Name, new Storyboard()));
@@ -212,6 +214,14 @@ namespace OverviewRkiData.Views.County
             }
 
             return listResults.Average();
+        }
+
+        private void slider1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var instance = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize);
+            var setting = instance.Load();
+            setting.LastScaledDiagram = e.NewValue;
+            instance.Save(setting);
         }
     }
 }

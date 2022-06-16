@@ -49,6 +49,7 @@ namespace OverviewRkiData.Views.County
         private string _weekTrend;
         private bool _showBarsFromRightToLeft;
         private bool _showAnimationOn;
+        private double _scaledDiagram = 1d;
 
         public ICommand CommandCreatePicture
         {
@@ -101,5 +102,15 @@ namespace OverviewRkiData.Views.County
         }
 
         public bool OnlyShowLast200Values { get; set; }
+
+        public double ScaledDiagram
+        {
+            get => this._scaledDiagram;
+            set
+            {
+                this._scaledDiagram = value;
+                this.OnNotifyPropertyChanged(nameof(this.ScaledDiagram));
+            }
+        }
     }
 }

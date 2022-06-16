@@ -1,5 +1,4 @@
 ﻿using Codexzier.Wpf.ApplicationFramework.Components.UserSettings;
-using Newtonsoft.Json;
 
 namespace OverviewRkiData.Components.UserSettings
 {
@@ -13,6 +12,7 @@ namespace OverviewRkiData.Components.UserSettings
         private bool _diagramAnimationOn;
         private bool _fillMissingDataWithDummyValues;
         private bool _onlyShowLast200Values;
+        private double _lastScaledDiagram;
 
         public string LastImportDirectory
         {
@@ -87,6 +87,16 @@ namespace OverviewRkiData.Components.UserSettings
             set
             {
                 this._onlyShowLast200Values = value;
+                this.SetChanged();
+            }
+        }
+
+        public double LastScaledDiagram
+        {
+            get => this._lastScaledDiagram;
+            set
+            {
+                this._lastScaledDiagram = value;
                 this.SetChanged();
             }
         }
