@@ -90,12 +90,19 @@ namespace OverviewRkiData.Views.County
 
                 this._viewModel.DistrictData = districtItem;
                 var setting = UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load();
+                var getLastDays = 0;
 
                 await Task.Run(() =>
                 {
+                    if (setting.OnlyShowLast200Values)
+                    {
+                        getLastDays = 100;
+                    }
+                    
                     var result = HelperExtension.GetCountyResults(
                         districtItem.Name, 
-                        setting.FillMissingDataWithDummyValues);
+                        setting.FillMissingDataWithDummyValues,
+                        getLastDays);
 
                     var enumerable = result as Landkreis[] ?? result.ToArray();
 
@@ -117,10 +124,10 @@ namespace OverviewRkiData.Views.County
                          return temp;
                      });
 
-                    if (setting.OnlyShowLast200Values)
-                    {
-                        countyResults = countyResults.TakeLast(100);
-                    }
+                    // if (setting.OnlyShowLast200Values)
+                    // {
+                    //     countyResults = countyResults.TakeLast(100);
+                    // }
 
 
                     this._viewModel.CountyResults = countyResults.ToList();

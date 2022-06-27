@@ -17,10 +17,10 @@
         
         <StackPanel Grid.Column="0" Orientation="Horizontal">
             <Button Content="Main" Command="{Binding CommandOpenMain}" />
-            <Button Content="Landkreise" Command="{Binding CommandOpenLandkreise}" />
+            <Button Content="Landkreise" Command="{Binding CommandOpenLandkreise}" Visibility="Collapsed" />
             <Button Content="Setup" Command="{Binding CommandOpenSetup}" />
 
-            <Button Content="Neu Abrufen" Command="{Binding CommandUpdateDataFromRki}" />
+            <Button Content="Neu Abrufen" Command="{Binding CommandUpdateDataFromRki}"  Visibility="Collapsed" />
         </StackPanel>
 
         <Grid Grid.Column="1">

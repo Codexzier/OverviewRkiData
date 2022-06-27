@@ -40,12 +40,13 @@ namespace OverviewRkiData.Components.Data
 
         internal static IEnumerable<Landkreis> GetCountyResults(
             string name, 
-            bool settingFillMissingDataWithDummyValues)
+            bool settingFillMissingDataWithDummyValues,
+            int getLastDays)
         {
             var minDate = DateTime.MaxValue;
             var maxDate = DateTime.MinValue;
             var list = new List<Landkreis>();
-            foreach (var filename in GetFiles())
+            foreach (var filename in GetFiles(getLastDays))
             {
                 var result = RkiCoronaLandkreiseComponent
                     .GetInstance()
@@ -137,12 +138,42 @@ namespace OverviewRkiData.Components.Data
 
         internal static string RemoveTimeFromLastUpdateString(this string lastUpdate) => lastUpdate.Split(',')[0];
 
-        internal static IEnumerable<string> GetFiles()
+        /// <summary>
+        /// Get all files with save data about the rki data.
+        /// </summary>
+        /// <param name="getLastDays">Set 0 for all files. How far in the past should data be retrieved?</param>
+        /// <returns></returns>
+        internal static IEnumerable<string> GetFiles(int getLastDays)
         {
+            if (getLastDays < 0)
+            {
+                getLastDays *= -1;
+            }
+
+            var listDate = new List<string>();
+            var date = DateTime.Today.AddDays(getLastDays * -1);
+            for (int i = 0; i < getLastDays + 1; i++)
+            {
+                listDate.Add($"-{date:d}");
+                date = date.AddDays(1);
+            }
+            
+            
             return Directory
                 .GetFiles(SubFolderRkiData())
-                .Where(w => w.EndsWith(".json") &&
-                            w.Contains(HelperExtension.RkiFilename));
+                .Where(filename =>
+                {
+                    var resultIsJson = filename.EndsWith(".json");
+                    var resultIsRkiFile = filename.Contains(RkiFilename);
+
+                    var resultGetLastDays = true;
+                    if (getLastDays != 0)
+                    {
+                        resultGetLastDays = listDate.Any(filename.Contains);
+                    }
+                    
+                    return resultIsJson && resultIsRkiFile && resultGetLastDays;
+                });
         }
     }
 }

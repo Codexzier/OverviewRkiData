@@ -24,11 +24,14 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
         {
             saveIf = null;
             var filename = HelperExtension.CreateFilename();
-
-            if (!UserSettingsLoader<CustomSettingsFile>.GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize).Load().LoadRkiDataByApplicationStart &&
+            var dd = UserSettingsLoader<CustomSettingsFile>
+                .GetInstance(SerializeHelper.Serialize, SerializeHelper.Deserialize)
+                .Load();
+            
+            if (!dd.LoadRkiDataByApplicationStart &&
                 !loadForceFromInternet)
             {
-                filename = GetLastLoadedData();
+                filename = GetLastLoadedData(dd.OnlyShowLast200Values ? 100 : 0);
             }
 
             if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
@@ -91,9 +94,9 @@ namespace OverviewRkiData.Components.RkiCoronaLandkreise
             return localRaw.Length != rawResult.Length;
         }
         
-        private static string GetLastLoadedData()
+        private static string GetLastLoadedData(int getLastDays)
         {
-            var last = HelperExtension.GetFiles().Select(s => new FileInfo(s)).OrderBy(w =>
+            var last = HelperExtension.GetFiles(getLastDays).Select(s => new FileInfo(s)).OrderBy(w =>
             {
                 var dateStr = w.FullName.GetDate();
                 if (DateTime.TryParse(dateStr, out var dt))
